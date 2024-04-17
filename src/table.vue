@@ -7,7 +7,7 @@
           <button class="upper_tab">정보관리</button>
           <button class="upper_tab">통계분석</button>
           <button class="upper_tab">커뮤니티</button>
-          <button class="upper_tab">현지사항</button>
+          <button class="upper_tab">공지사항</button>
         </ul>
         <div class="search-bar">
           <input type="text" placeholder="검색">

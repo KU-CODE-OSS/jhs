@@ -20,7 +20,9 @@
     </div>
   </div>
     <li><router-link to="/">메인페이지</router-link></li>
-    <li><router-link to="/table">테이블</router-link></li>
+    <li><router-link to="/table">테이블(구)</router-link></li>
+    <li><router-link to="/new_table">테이블(신)</router-link></li>
+    <li><router-link to="/dashboard">대시보드</router-link></li>
   <RouterView />
 
 </template>
