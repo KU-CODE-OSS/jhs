@@ -156,6 +156,7 @@ export default {
       editItem(item) {
         // 여기서는 예시로 콘솔에 아이템 ID를 출력하겠습니다.
         console.log(`Editing item with ID: ${item.id}`);
+
         
         // 실제 구현에서는 편집 로직을 추가하게 됩니다.
         // 예를 들어, 편집 폼으로 사용자를 리디렉션하거나

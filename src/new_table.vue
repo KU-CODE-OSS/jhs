@@ -145,8 +145,8 @@
 </template>
 
 <script>
-  export default {
-    data() {
+    export default {
+        data() {
       return {
         dialog: false,
         headers: [
@@ -247,7 +247,6 @@
         },
       }
     },
-
     computed: {
       formTitle() {
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
