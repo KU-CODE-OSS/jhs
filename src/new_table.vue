@@ -15,97 +15,97 @@
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
+            <v-row wrap>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.StudentID"
                   label="Student ID"
                 ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
+              </v-col>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.StudentNM"
                   label="Student Name"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.Department"
                   label="Department"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.DoubleMajor"
                   label="DoubleMajor"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.StudentNumber"
                   label="StudentNumber"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.College"
                   label="College"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.Primary_Email"
                   label="Primary_Email"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.EnrollmentStatus"
                   label="EnrollmentStatus"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.Follower_cnt"
                   label="Follower_cnt"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.Following_cnt"
                   label="Following_cnt"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.Public_repos_cnt"
                   label="Public_repos_cnt"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.Github_profile_createDate"
                   label="Github_profile_createDate"
                 ></v-text-field>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6 md4>
+              <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.Github_profile_updateDate"
                   label="Github_profile_updateDate"
                 ></v-text-field>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -145,8 +145,8 @@
 </template>
 
 <script>
-    export default {
-        data() {
+  export default {
+    data() {
       return {
         dialog: false,
         headers: [
@@ -161,8 +161,14 @@
           { text: 'Follower_cnt', value: 'Follower_cnt' },
           { text: 'Following_cnt', value: 'Following_cnt' },
           { text: 'Public_repos_cnt', value: 'Public_repos_cnt' },
-          { text: 'Github_profile_createDate', value: 'Github_profile_createDate' },
-          { text: 'Github_profile_updateDate', value: 'Github_profile_updateDate' },          
+          {
+            text: 'Github_profile_createDate',
+            value: 'Github_profile_createDate',
+          },
+          {
+            text: 'Github_profile_updateDate',
+            value: 'Github_profile_updateDate',
+          },
           // 나머지 헤더 필드도 동일하게 추가
           { text: 'Actions', value: 'actions', sortable: false },
         ],
@@ -170,80 +176,80 @@
           {
             StudentID: 101,
             StudentNM: '홍길동',
-            Department: '컴퓨터공학과', 
-            DoubleMajor: '경영학과', 
-            StudentNumber: '20240001', 
-            College: '공과대학', 
-            Primary_Email: 'hong101@university.ac.kr', 
-            EnrollmentStatus: '재학', 
-            Follower_cnt: 120, 
-            Following_cnt: 75, 
-            Public_repos_cnt: 30, 
-            Github_profile_createDate: '2019-02-15', 
-            Github_profile_updateDate: '2024-03-22'
+            Department: '컴퓨터공학과',
+            DoubleMajor: '경영학과',
+            StudentNumber: '20240001',
+            College: '공과대학',
+            Primary_Email: 'hong101@university.ac.kr',
+            EnrollmentStatus: '재학',
+            Follower_cnt: 120,
+            Following_cnt: 75,
+            Public_repos_cnt: 30,
+            Github_profile_createDate: '2019-02-15',
+            Github_profile_updateDate: '2024-03-22',
             // 나머지 필드도 동일하게 추가
           },
           {
-            StudentID: 102, 
-            StudentNM: '이순신', 
-            Department: '기계공학과', 
-            DoubleMajor: '없음', 
-            StudentNumber: '20240002', 
-            College: '공과대학', 
-            Primary_Email: 'lee102@university.ac.kr', 
-            EnrollmentStatus: '휴학', 
-            Follower_cnt: 150, 
-            Following_cnt: 80, 
-            Public_repos_cnt: 12, 
-            Github_profile_createDate: '2018-06-10', 
-            Github_profile_updateDate: '2024-01-18'
+            StudentID: 102,
+            StudentNM: '이순신',
+            Department: '기계공학과',
+            DoubleMajor: '없음',
+            StudentNumber: '20240002',
+            College: '공과대학',
+            Primary_Email: 'lee102@university.ac.kr',
+            EnrollmentStatus: '휴학',
+            Follower_cnt: 150,
+            Following_cnt: 80,
+            Public_repos_cnt: 12,
+            Github_profile_createDate: '2018-06-10',
+            Github_profile_updateDate: '2024-01-18',
           },
           {
-            StudentID: 103, 
-            StudentNM: '장보고', 
-            Department: '전자공학과', 
-            DoubleMajor: '물리학과', 
-            StudentNumber: '20240003', 
-            College: '자연과학대학', 
-            Primary_Email: 'jang103@university.ac.kr', 
-            EnrollmentStatus: '졸업', 
-            Follower_cnt: 200, 
-            Following_cnt: 100, 
-            Public_repos_cnt: 42, 
-            Github_profile_createDate: '2017-11-30', 
-            Github_profile_updateDate: '2024-03-20'
+            StudentID: 103,
+            StudentNM: '장보고',
+            Department: '전자공학과',
+            DoubleMajor: '물리학과',
+            StudentNumber: '20240003',
+            College: '자연과학대학',
+            Primary_Email: 'jang103@university.ac.kr',
+            EnrollmentStatus: '졸업',
+            Follower_cnt: 200,
+            Following_cnt: 100,
+            Public_repos_cnt: 42,
+            Github_profile_createDate: '2017-11-30',
+            Github_profile_updateDate: '2024-03-20',
           },
         ],
         editedIndex: -1,
         editedItem: {
-        StudentID: null,
-        StudentNM: '',
-        Department: '',
-        DoubleMajor: '',
-        StudentNumber: '',
-        College: '',
-        Primary_Email: '',
-        EnrollmentStatus: '',
-        Follower_cnt: null,
-        Following_cnt: null,
-        Public_repos_cnt: null,
-        Github_profile_createDate: '',
-        Github_profile_updateDate: '',
+          StudentID: null,
+          StudentNM: '',
+          Department: '',
+          DoubleMajor: '',
+          StudentNumber: '',
+          College: '',
+          Primary_Email: '',
+          EnrollmentStatus: '',
+          Follower_cnt: null,
+          Following_cnt: null,
+          Public_repos_cnt: null,
+          Github_profile_createDate: '',
+          Github_profile_updateDate: '',
         },
         defaultItem: {
-        StudentID: null,
-        StudentNM: '',
-        Department: '',
-        DoubleMajor: '',
-        StudentNumber: '',
-        College: '',
-        Primary_Email: '',
-        EnrollmentStatus: '',
-        Follower_cnt: null,
-        Following_cnt: null,
-        Public_repos_cnt: null,
-        Github_profile_createDate: '',
-        Github_profile_updateDate: '',
+          StudentID: null,
+          StudentNM: '',
+          Department: '',
+          DoubleMajor: '',
+          StudentNumber: '',
+          College: '',
+          Primary_Email: '',
+          EnrollmentStatus: '',
+          Follower_cnt: null,
+          Following_cnt: null,
+          Public_repos_cnt: null,
+          Github_profile_createDate: '',
+          Github_profile_updateDate: '',
         },
       }
     },

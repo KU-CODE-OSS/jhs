@@ -20,5 +20,11 @@ npm run build
 npm run lint
 ```
 
+### vuetify icon install
+```
+npm install material-design-icons-iconfont
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
