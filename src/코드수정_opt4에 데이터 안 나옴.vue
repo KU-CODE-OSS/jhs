@@ -37,17 +37,17 @@
                   <v-tabs v-model="tab" color="primary" direction="vertical">
                     <v-tab
                       prepend-icon="mdi-account"
-                      text="Option 1"
+                      text="내 정보"
                       value="option-1"
                     ></v-tab>
                     <v-tab
                       prepend-icon="mdi-lock"
-                      text="Option 2"
+                      text="코스"
                       value="option-2"
                     ></v-tab>
                     <v-tab
                       prepend-icon="mdi-access-point"
-                      text="Option 3"
+                      text="전체 통계"
                       value="option-3"
                     ></v-tab>
                     <v-tab
@@ -105,50 +105,38 @@
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="option-2">
-                  <v-card flat>
-                    <v-card-text>
-                      <p>
-                        Morbi nec metus. Suspendisse faucibus, nunc et
-                        pellentesque egestas, lacus ante convallis tellus, vitae
-                        iaculis lacus elit id tortor. Sed mollis, eros et
-                        ultrices tempus, mauris ipsum aliquam libero, non
-                        adipiscing dolor urna a orci. Curabitur ligula sapien,
-                        tincidunt non, euismod vitae, posuere imperdiet, leo.
-                        Nunc sed turpis.
-                      </p>
-
-                      <p>
-                        Suspendisse feugiat. Suspendisse faucibus, nunc et
-                        pellentesque egestas, lacus ante convallis tellus, vitae
-                        iaculis lacus elit id tortor. Proin viverra, ligula sit
-                        amet ultrices semper, ligula arcu tristique sapien, a
-                        accumsan nisi mauris ac eros. In hac habitasse platea
-                        dictumst. Fusce ac felis sit amet ligula pharetra
-                        condimentum.
-                      </p>
-
-                      <p>
-                        Sed consequat, leo eget bibendum sodales, augue velit
-                        cursus nunc, quis gravida magna mi a libero. Nam commodo
-                        suscipit quam. In consectetuer turpis ut velit. Sed
-                        cursus turpis vitae tortor. Aliquam eu nunc.
-                      </p>
-
-                      <p>
-                        Etiam ut purus mattis mauris sodales aliquam. Ut varius
-                        tincidunt libero. Aenean viverra rhoncus pede. Duis leo.
-                        Fusce fermentum odio nec arcu.
-                      </p>
-
-                      <p class="mb-0">
-                        Donec venenatis vulputate lorem. Aenean viverra rhoncus
-                        pede. In dui magna, posuere eget, vestibulum et, tempor
-                        auctor, justo. Fusce commodo aliquam arcu. Suspendisse
-                        enim turpis, dictum sed, iaculis a, condimentum nec,
-                        nisi.
-                      </p>
-                    </v-card-text>
-                  </v-card>
+                  <div>
+                    <v-container>
+                      <v-row justify="center">
+                        <!-- 중앙 정렬 -->
+                        <v-col cols="12" md="6">
+                          <!-- 중간 크기의 화면에서 6열 사용 -->
+                          <v-tabs
+                            v-model="tab2"
+                            color="primary"
+                            direction="vertical"
+                          >
+                            <v-tab
+                              prepend-icon="mdi-account"
+                              text="운영체제"
+                            ></v-tab>
+                            <v-tab
+                              prepend-icon="mdi-lock"
+                              text="컴퓨터 구조"
+                            ></v-tab>
+                            <v-tab
+                              prepend-icon="mdi-access-point"
+                              text="네트워크"
+                            ></v-tab>
+                            <v-tab
+                              prepend-icon="mdi-access-point"
+                              text="데이터 베이스"
+                            ></v-tab>
+                          </v-tabs>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </div>
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="option-3">
@@ -384,6 +372,8 @@
     },
     data() {
       return {
+        tab1: null, // 첫 번째 탭 그룹의 v-model,
+        tab2: null, // 두 번째 탭 그룹의 v-model,
         headers: [
           { text: 'StudentID', value: 'StudentID' },
           { text: 'StudentNM', value: 'StudentNM' },
