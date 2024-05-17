@@ -1,6 +1,6 @@
 <template>
   <img v-if="showImage" alt="KU logo" src="./assets/logo.png">
-  <RouterView />
+  <div><button class="login_button" @click="redirectToLogin">로그인</button></div>
   <div>
     <div v-if="isAuthenticated">
       로그인 성공!
@@ -18,14 +18,13 @@
         <input type="submit" value="로그인">
       </form>
       <a href="/signup">회원가입</a>
+      <RouterView />
     </div>
   </div>
   <li><router-link to="/">메인페이지</router-link></li>
   <li><router-link to="/table">테이블(구)</router-link></li>
   <li><router-link to="/new_table">테이블(신)</router-link></li>
   <li><button @click="redirectToDashboard">대시보드</button></li>
-
-
 </template>
 
 <script>
@@ -86,7 +85,10 @@ export default {
       // 여기에 대시보드로 이동할 때 필요한 로직을 추가
       // 예: Vue Router를 사용하지 않고 JavaScript의 window.location을 사용하는 경우
       window.location.href = '/dashboard'; // 이 부분을 실제 이동하고자 하는 URL로 변경하세요.
-      }
+      },
+    redirectToLogin() {
+      window.location.href = '/login'; // 이 부분을 실제 이동하고자 하는 URL로 변경하세요.
+      },
   }
 };
 </script>
@@ -99,5 +101,18 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.login_button {
+  background-color: #78002f; 
+  border: none;
+  color: white;
+  padding: 80px 320px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 32px;
+  margin: 4px 2px;
+  cursor: pointer;
 }
 </style>
