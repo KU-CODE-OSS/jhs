@@ -15,20 +15,95 @@
           <v-container grid-list-md>
             <v-row wrap>
               <v-col xs="12" sm="12" md="6">
-                <v-text-field v-model="editedItem.StudentID" label="Student ID"></v-text-field>
+                <v-text-field
+                  v-model="editedItem.StudentID"
+                  label="Student ID"
+                ></v-text-field>
               </v-col>
               <v-col xs="12" sm="12" md="6">
-                <v-text-field v-model="editedItem.StudentNM" label="Student Name"></v-text-field>
+                <v-text-field
+                  v-model="editedItem.StudentNM"
+                  label="Student Name"
+                ></v-text-field>
               </v-col>
-              <!-- 나머지 필드들도 동일하게 추가 -->
+
               <v-col xs="12" sm="12" md="6">
-                <v-text-field v-model="editedItem.Department" label="Department"></v-text-field>
+                <v-text-field
+                  v-model="editedItem.Department"
+                  label="Department"
+                ></v-text-field>
               </v-col>
+
               <v-col xs="12" sm="12" md="6">
-                <v-text-field v-model="editedItem.DoubleMajor" label="Double Major"></v-text-field>
+                <v-text-field
+                  v-model="editedItem.DoubleMajor"
+                  label="DoubleMajor"
+                ></v-text-field>
               </v-col>
-              <!-- 더 많은 필드를 추가 -->
-            </v-row>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.StudentNumber"
+                  label="StudentNumber"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.College"
+                  label="College"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.Primary_Email"
+                  label="Primary_Email"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.EnrollmentStatus"
+                  label="EnrollmentStatus"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.Follower_cnt"
+                  label="Follower_cnt"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.Following_cnt"
+                  label="Following_cnt"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.Public_repos_cnt"
+                  label="Public_repos_cnt"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.Github_profile_createDate"
+                  label="Github_profile_createDate"
+                ></v-text-field>
+              </v-col>
+
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field
+                  v-model="editedItem.Github_profile_updateDate"
+                  label="Github_profile_updateDate"
+                ></v-text-field>
+              </v-col>
+            </v-row>  
           </v-container>
         </v-card-text>
         <v-card-actions>

@@ -1,126 +1,73 @@
 <template>
-  <img v-if="showImage" alt="KU logo" src="./assets/logo.png">
-  <div v-if="ishome">
-    <button class="login_button" @click="redirectToLogin">로그인</button>
-  </div>
-  <RouterView />
-  <!-- 
   <div>
-    <div v-if="isAuthenticated">
-      로그인 성공!
-      {{ username }}님 환영합니다.
-      {{ githubId }}가 님의 깃허브 아이디입니다.
-      <form @submit.prevent="logout">
-        <button type="submit">로그아웃</button>
-      </form>
-      <a href="/onsession">세션 유지 중인지 확인!</a>
-    </div>
-    <div v-else>
-      <form @submit.prevent="login">
-        <input name="username" type="text" v-model="username">
-        <input name="password" type="password" v-model="password">
-        <input type="submit" value="로그인">
-      </form>
-      <a href="/signup">회원가입</a>
-    </div>
-  </div> 
-  -->
-  <div v-if="!isDashboard">
-    <li><router-link to="/">메인페이지</router-link></li>
-    <li><button @click="redirectToDashboard">대시보드</button></li>
+    <v-toolbar flat color="white">
+      <v-toolbar-title>Students</v-toolbar-title>
+      <v-divider class="mx-2" inset vertical></v-divider>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" dark class="mb-2" @click="dialog = true">New Item</v-btn>
+    </v-toolbar>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ formTitle }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-row wrap>
+              <!-- Form fields as shown previously -->
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
+          <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-data-table :headers="headers" :items="items" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Student Data</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" dark v-bind="attrs" v-on="on">Add New Student</v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="headline">Fill in the details of the new student</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <!-- Input fields for new student data -->
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" text @click="save">Save</v-btn>
+                <v-btn color="red darken-1" text @click="dialog = false">Close</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template v-slot:item="{ item }">
+        <tr>
+          <!-- Display row data as previously structured -->
+        </tr>
+      </template>
+      <template v-slot:no-data>
+        <v-btn color="primary" @click="initialize">Reset</v-btn>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  computed: {
-    // 현재 라우트를 기반으로 이미지 표시 여부 결정
-    showImage() {
-      // 이미지를 표시하고 싶은 라우트 목록
-      const imageRoutes = ['/', '/table', '/new_table'];
-      // 현재 경로가 이미지를 표시하는 경로 목록에 포함되어 있는지 확인
-      return imageRoutes.includes(this.$route.path);
-    },
-    // 대시보드 페이지인지 확인
-    ishome() {
-      return this.$route.path === '/';
-    }
-  },
-  data() {
-    return {
-      isAuthenticated: false,
-      username: '',
-      password: ''
-    };
-  },
-  methods: {
-    login() {
-      const userData = {
-        username: this.username,
-        password: this.password
-      };
-
-      // 로그인 요청 보내기
-      this.$axios.post('/auth/login', userData)
-        .then(response => {
-          // 로그인 성공 시 처리
-          if (response.status === 200) {
-            this.isAuthenticated = true;
-            // 추가적인 로그인 성공 시 처리 코드
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-    logout() {
-      // 로그아웃 요청 보내기
-      this.$axios.post('/logout')
-        .then(response => {
-          // 로그아웃 성공 시 처리
-          if (response.status === 200) {
-            this.isAuthenticated = false;
-            // 추가적인 로그아웃 성공 시 처리 코드
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-    redirectToDashboard() {
-      // Vue Router를 사용하여 대시보드로 이동
-      this.$router.push('/dashboard');
-    },
-    redirectToLogin() {
-      // Vue Router를 사용하여 로그인 페이지로 이동
-      this.$router.push('/login');
-    },
-  }
-};
+  // Script as previously provided
+}
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-.login_button {
-  background-color: #78002f; 
-  border: none;
-  color: white;
-  padding: 80px 320px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 32px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-</style>

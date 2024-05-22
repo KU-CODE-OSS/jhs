@@ -15,7 +15,6 @@
         <v-btn>커뮤니티</v-btn>
         <v-btn>공지사항</v-btn>
 
-
         <v-spacer></v-spacer>
 
         <v-responsive max-width="160">
@@ -42,28 +41,13 @@
                   <v-tabs v-model="tab" color="primary" direction="vertical">
                     <v-tab
                       prepend-icon="mdi-account"
-                      text="내 정보"
+                      text="표"
                       value="option-1"
                     ></v-tab>
                     <v-tab
                       prepend-icon="mdi-lock"
-                      text="코스"
+                      text="그래프"
                       value="option-2"
-                    ></v-tab>
-                    <v-tab
-                      prepend-icon="mdi-access-point"
-                      text="전체 통계"
-                      value="option-3"
-                    ></v-tab>
-                    <v-tab
-                      prepend-icon="mdi-access-point"
-                      text="Option 4"
-                      value="option-4"
-                    ></v-tab>
-                    <v-tab
-                      prepend-icon="mdi-access-point"
-                      text="Option 5"
-                      value="option-5"
                     ></v-tab>
                   </v-tabs>
                 </div>
@@ -90,106 +74,12 @@
                         arcu. Morbi ac felis. Etiam feugiat lorem non metus. Sed
                         a libero.
                       </p>
-
-                      <p>
-                        Nam ipsum risus, rutrum vitae, vestibulum eu, molestie
-                        vel, lacus. Aenean tellus metus, bibendum sed, posuere
-                        ac, mattis non, nunc. Aliquam lobortis. Aliquam
-                        lobortis. Suspendisse non nisl sit amet velit hendrerit
-                        rutrum.
-                      </p>
-
-                      <p class="mb-0">
-                        Phasellus dolor. Fusce neque. Fusce fermentum odio nec
-                        arcu. Pellentesque libero tortor, tincidunt et,
-                        tincidunt eget, semper nec, quam. Phasellus blandit leo
-                        ut odio.
-                      </p>
                     </v-card-text>
                   </v-card>
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="option-2">
-                  <div>
-                    <v-container>
-                      <v-row justify="center">
-                        <!-- 중앙 정렬 -->
-                        <v-col cols="12" md="6">
-                          <!-- 중간 크기의 화면에서 6열 사용 -->
-                          <v-tabs
-                            v-model="tab2"
-                            color="primary"
-                            direction="vertical"
-                          >
-                            <v-tab
-                              prepend-icon="mdi-account"
-                              text="운영체제"
-                            ></v-tab>
-                            <v-tab
-                              prepend-icon="mdi-lock"
-                              text="컴퓨터 구조"
-                            ></v-tab>
-                            <v-tab
-                              prepend-icon="mdi-access-point"
-                              text="네트워크"
-                            ></v-tab>
-                            <v-tab
-                              prepend-icon="mdi-access-point"
-                              text="데이터 베이스"
-                            ></v-tab>
-                          </v-tabs>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </div>
-                </v-tabs-window-item>
-
-                <v-tabs-window-item value="option-3">
-                  <v-card flat>
-                    <v-card-text>
-                      <p>
-                        Fusce a quam. Phasellus nec sem in justo pellentesque
-                        facilisis. Nam eget dui. Proin viverra, ligula sit amet
-                        ultrices semper, ligula arcu tristique sapien, a
-                        accumsan nisi mauris ac eros. In dui magna, posuere
-                        eget, vestibulum et, tempor auctor, justo.
-                      </p>
-
-                      <p class="mb-0">
-                        Cras sagittis. Phasellus nec sem in justo pellentesque
-                        facilisis. Proin sapien ipsum, porta a, auctor quis,
-                        euismod ut, mi. Donec quam felis, ultricies nec,
-                        pellentesque eu, pretium quis, sem. Nam at tortor in
-                        tellus interdum sagittis.
-                      </p>
-                    </v-card-text>
-                  </v-card>
-                </v-tabs-window-item>
-
-                <v-tabs-window-item value="option-4">
-                  <table-component />
-                </v-tabs-window-item>
-
-                <v-tabs-window-item value="option-5">
-                  <v-card flat>
-                    <v-card-text>
-                      <p>
-                        Fusce a quam. Phasellus nec sem in justo pellentesque
-                        facilisis. Nam eget dui. Proin viverra, ligula sit amet
-                        ultrices semper, ligula arcu tristique sapien, a
-                        accumsan nisi mauris ac eros. In dui magna, posuere
-                        eget, vestibulum et, tempor auctor, justo.
-                      </p>
-
-                      <p class="mb-0">
-                        Cras sagittis. Phasellus nec sem in justo pellentesque
-                        facilisis. Proin sapien ipsum, porta a, auctor quis,
-                        euismod ut, mi. Donec quam felis, ultricies nec,
-                        pellentesque eu, pretium quis, sem. Nam at tortor in
-                        tellus interdum sagittis.
-                      </p>
-                    </v-card-text>
-                  </v-card>
+                  <p> tmp </p>
                 </v-tabs-window-item>
               </v-tabs-window>
             </v-sheet>
@@ -202,19 +92,14 @@
 
 <script setup>
   import { ref } from 'vue'
-  import TableComponent from './table.vue'
-
   const dialog = ref(false)
   const tab = ref('option-1')
-  const links = ref(['정보관리', '통계분석', '커뮤니티', '공지사항']) 
-  //<v-btn v-for="link in links" :key="link" text> {{ link }} </v-btn>
+  // const links = ref(['정보관리', '통계분석', '커뮤니티', '공지사항'])
 </script>
 
 <script>
   export default {
     name: 'DashboardComponent',
-    components: { TableComponent, // table.vue 컴포넌트를 등록
-  },
     setup() {
       return { dialog, tab, links }
     },
