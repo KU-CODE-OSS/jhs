@@ -42,27 +42,27 @@
                   <v-tabs v-model="tab" color="primary" direction="vertical">
                     <v-tab
                       prepend-icon="mdi-account"
-                      text="내 정보"
+                      text="운영체제"
                       value="option-1"
                     ></v-tab>
                     <v-tab
                       prepend-icon="mdi-lock"
-                      text="코스"
+                      text="자료구조"
                       value="option-2"
                     ></v-tab>
                     <v-tab
                       prepend-icon="mdi-access-point"
-                      text="전체 통계"
+                      text="컴퓨터구조"
                       value="option-3"
                     ></v-tab>
                     <v-tab
                       prepend-icon="mdi-access-point"
-                      text="Option 4"
+                      text="네트워크"
                       value="option-4"
                     ></v-tab>
                     <v-tab
                       prepend-icon="mdi-access-point"
-                      text="Option 5"
+                      text="데이터베이스"
                       value="option-5"
                     ></v-tab>
                   </v-tabs>
@@ -362,8 +362,6 @@
 
 <script setup>
   import { ref } from 'vue'
-  import TableComponent from './table.vue'
-
   const dialog = ref(false)
   const tab = ref('option-1')
   const links = ref(['정보관리', '통계분석', '커뮤니티', '공지사항'])
@@ -372,8 +370,6 @@
 <script>
   export default {
     name: 'DashboardComponent',
-    components: { TableComponent, // table.vue 컴포넌트를 등록
-  },
     setup() {
       return { dialog, tab, links }
     },

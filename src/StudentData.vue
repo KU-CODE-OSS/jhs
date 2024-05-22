@@ -33,7 +33,7 @@ export default {
         items: [
           {
             StudentID: 123123101,
-            StudentNM: '홍ㄴ길동',
+            StudentNM: '홍길동',
             Department: '컴퓨터공학과', 
             DoubleMajor: '경영학과', 
             StudentNumber: '20240001', 

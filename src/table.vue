@@ -1,231 +1,217 @@
 <template>
-  <div id="app">
-    <!-- 헤더 -->
-    <header>
-      <nav>
-        <ul>
-          <button class="upper_tab">정보관리</button>
-          <button class="upper_tab">통계분석</button>
-          <button class="upper_tab">커뮤니티</button>
-          <button class="upper_tab">공지사항</button>
-        </ul>
-        <div class="search-bar">
-          <input type="text" placeholder="검색">
-          <button>검색</button>
-        </div>
-      </nav>
-    </header>
-    
-    <!-- <router-view :블로그글="블로그글"></router-view> -->
-
-
-
-<table class="left_tab" style="width:11%">
-  <tr>
-    <td><button class="left_tab_button">교과정보</button></td>
-  </tr>
-  <tr>
-    <td><button class="left_tab_button">학생 정보</button></td>
-  </tr>
-  <tr>
-    <td><button class="left_tab_button">오픈소스 정보</button></td>
-  </tr>
-</table>
-
-    <!-- 본문 -->
-    <main>
-      <!-- <RouterView /> -->
-      <section class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>StudentID</th>
-              <th>StudentNM</th>
-              <th>Department</th>
-              <th>DoubleMajor</th>
-              <th>StudentNumber</th>
-              <th>College</th>
-              <th>Primary_Email</th>
-              <th>EnrollmentStatus</th>
-              <th>Follower_cnt</th>
-              <th>Following_cnt</th>
-              <th>Public_repos_cnt</th>
-              <th>Github_profile_createDate</th>
-              <th>Github_profile_updateDate</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in items" :key="item.id">
-              <td><button @click="item.StudentID = 'a'">tmp</button>{{ item.StudentID }}</td>
-              <td>{{ item.StudentNM }}</td>
-              <td>{{ item.Department }}</td>
-              <td>{{ item.DoubleMajor }}</td>
-              <td>{{ item.StudentNumber }}</td>
-              <td>{{ item.College }}</td>
-              <td>{{ item.Primary_Email }}</td>
-              <td>{{ item.EnrollmentStatus }}</td>
-              <td>{{ item.Follower_cnt }}</td>
-              <td>{{ item.Following_cnt }}</td>
-              <td>{{ item.Public_repos_cnt }}</td>
-              <td>{{ item.Github_profile_createDate }}</td>
-              <td>{{ item.Github_profile_updateDate }}</td>
-              <td><button @click="editItem(item)">수정</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
+  <div>
+    <v-toolbar flat color="white">
+      <v-toolbar-title>Students</v-toolbar-title>
+      <v-divider class="mx-2" inset vertical></v-divider>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" dark class="mb-2" @click="dialog = true">New Item</v-btn>
+    </v-toolbar>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ formTitle }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-row wrap>
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field v-model="editedItem.StudentID" label="Student ID"></v-text-field>
+              </v-col>
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field v-model="editedItem.StudentNM" label="Student Name"></v-text-field>
+              </v-col>
+              <!-- 나머지 필드들도 동일하게 추가 -->
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field v-model="editedItem.Department" label="Department"></v-text-field>
+              </v-col>
+              <v-col xs="12" sm="12" md="6">
+                <v-text-field v-model="editedItem.DoubleMajor" label="Double Major"></v-text-field>
+              </v-col>
+              <!-- 더 많은 필드를 추가 -->
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
+          <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-data-table :headers="headers" :items="items" class="elevation-1">
+      <template v-slot:items="props">
+        <td>{{ props.item.StudentID }}</td>
+        <td>{{ props.item.StudentNM }}</td>
+        <td>{{ props.item.Department }}</td>
+        <td>{{ props.item.DoubleMajor }}</td>
+        <td>{{ props.item.StudentNumber }}</td>
+        <td>{{ props.item.College }}</td>
+        <td>{{ props.item.Primary_Email }}</td>
+        <td>{{ props.item.EnrollmentStatus }}</td>
+        <td>{{ props.item.Follower_cnt }}</td>
+        <td>{{ props.item.Following_cnt }}</td>
+        <td>{{ props.item.Public_repos_cnt }}</td>
+        <td>{{ props.item.Github_profile_createDate }}</td>
+        <td>{{ props.item.Github_profile_updateDate }}</td>
+        <td class="justify-center layout px-0">
+          <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+          <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+        </td>
+      </template>
+      <template v-slot:no-data>
+        <v-btn color="primary" @click="reset">Reset</v-btn>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
-/*
-import { createApp } from 'vue'
-import App from './App.vue'
-
-// Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-const vuetify = createVuetify({
-  components,
-  directives,
-})
-
-createApp(App).use(vuetify).mount('#app')  */
-
 export default {
-  name: 'App',
-  components: {
-  },
   data() {
     return {
+      dialog: false,
+      headers: [
+        { text: 'StudentID', value: 'StudentID' },
+        { text: 'StudentNM', value: 'StudentNM' },
+        { text: 'Department', value: 'Department' },
+        { text: 'DoubleMajor', value: 'DoubleMajor' },
+        { text: 'StudentNumber', value: 'StudentNumber' },
+        { text: 'College', value: 'College' },
+        { text: 'Primary_Email', value: 'Primary_Email' },
+        { text: 'EnrollmentStatus', value: 'EnrollmentStatus' },
+        { text: 'Follower_cnt', value: 'Follower_cnt' },
+        { text: 'Following_cnt', value: 'Following_cnt' },
+        { text: 'Public_repos_cnt', value: 'Public_repos_cnt' },
+        {
+          text: 'Github_profile_createDate',
+          value: 'Github_profile_createDate',
+        },
+        {
+          text: 'Github_profile_updateDate',
+          value: 'Github_profile_updateDate',
+        },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
       items: [
-        { 
-          StudentID: 101, 
-          StudentNM: '홍길동', 
-          Department: '컴퓨터공학과', 
-          DoubleMajor: '경영학과', 
-          StudentNumber: '20240001', 
-          College: '공과대학', 
-          Primary_Email: 'hong101@university.ac.kr', 
-          EnrollmentStatus: '재학', 
-          Follower_cnt: 120, 
-          Following_cnt: 75, 
-          Public_repos_cnt: 30, 
-          Github_profile_createDate: '2019-02-15', 
-          Github_profile_updateDate: '2024-03-22'
+        {
+          StudentID: 101,
+          StudentNM: '홍길동',
+          Department: '컴퓨터공학과',
+          DoubleMajor: '경영학과',
+          StudentNumber: '20240001',
+          College: '공과대학',
+          Primary_Email: 'hong101@university.ac.kr',
+          EnrollmentStatus: '재학',
+          Follower_cnt: 120,
+          Following_cnt: 75,
+          Public_repos_cnt: 30,
+          Github_profile_createDate: '2019-02-15',
+          Github_profile_updateDate: '2024-03-22',
         },
-        { 
-          StudentID: 102, 
-          StudentNM: '이순신', 
-          Department: '기계공학과', 
-          DoubleMajor: '없음', 
-          StudentNumber: '20240002', 
-          College: '공과대학', 
-          Primary_Email: 'lee102@university.ac.kr', 
-          EnrollmentStatus: '휴학', 
-          Follower_cnt: 150, 
-          Following_cnt: 80, 
-          Public_repos_cnt: 12, 
-          Github_profile_createDate: '2018-06-10', 
-          Github_profile_updateDate: '2024-01-18'
+        {
+          StudentID: 102,
+          StudentNM: '이순신',
+          Department: '기계공학과',
+          DoubleMajor: '없음',
+          StudentNumber: '20240002',
+          College: '공과대학',
+          Primary_Email: 'lee102@university.ac.kr',
+          EnrollmentStatus: '휴학',
+          Follower_cnt: 150,
+          Following_cnt: 80,
+          Public_repos_cnt: 12,
+          Github_profile_createDate: '2018-06-10',
+          Github_profile_updateDate: '2024-01-18',
         },
-        { 
-          StudentID: 103, 
-          StudentNM: '장보고', 
-          Department: '전자공학과', 
-          DoubleMajor: '물리학과', 
-          StudentNumber: '20240003', 
-          College: '자연과학대학', 
-          Primary_Email: 'jang103@university.ac.kr', 
-          EnrollmentStatus: '졸업', 
-          Follower_cnt: 200, 
-          Following_cnt: 100, 
-          Public_repos_cnt: 42, 
-          Github_profile_createDate: '2017-11-30', 
-          Github_profile_updateDate: '2024-03-20'
-        }
-      ]
+        {
+          StudentID: 103,
+          StudentNM: '장보고',
+          Department: '전자공학과',
+          DoubleMajor: '물리학과',
+          StudentNumber: '20240003',
+          College: '자연과학대학',
+          Primary_Email: 'jang103@university.ac.kr',
+          EnrollmentStatus: '졸업',
+          Follower_cnt: 200,
+          Following_cnt: 100,
+          Public_repos_cnt: 42,
+          Github_profile_createDate: '2017-11-30',
+          Github_profile_updateDate: '2024-03-20',
+        },
+      ],
+      editedIndex: -1,
+      editedItem: {
+        StudentID: null,
+        StudentNM: '',
+        Department: '',
+        DoubleMajor: '',
+        StudentNumber: '',
+        College: '',
+        Primary_Email: '',
+        EnrollmentStatus: '',
+        Follower_cnt: null,
+        Following_cnt: null,
+        Public_repos_cnt: null,
+        Github_profile_createDate: '',
+        Github_profile_updateDate: '',
+      },
+      defaultItem: {
+        StudentID: null,
+        StudentNM: '',
+        Department: '',
+        DoubleMajor: '',
+        StudentNumber: '',
+        College: '',
+        Primary_Email: '',
+        EnrollmentStatus: '',
+        Follower_cnt: null,
+        Following_cnt: null,
+        Public_repos_cnt: null,
+        Github_profile_createDate: '',
+        Github_profile_updateDate: '',
+      },
     }
   },
-    methods: {
-      editItem(item) {
-        // 여기서는 예시로 콘솔에 아이템 ID를 출력하겠습니다.
-        console.log(`Editing item with ID: ${item.id}`);
-
-        
-        // 실제 구현에서는 편집 로직을 추가하게 됩니다.
-        // 예를 들어, 편집 폼으로 사용자를 리디렉션하거나
-        // 폼을 표시하는 모달을 여는 등의 동작을 할 수 있습니다.
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+    },
+  },
+  methods: {
+    editItem(item) {
+      this.editedIndex = this.items.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+    deleteItem(item) {
+      const index = this.items.indexOf(item)
+      if (confirm('Are you sure you want to delete this item?')) {
+        this.items.splice(index, 1)
       }
-    }
-  }
+    },
+    close() {
+      this.dialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.items[this.editedIndex], this.editedItem)
+      } else {
+        this.items.push(this.editedItem)
+      }
+      this.close()
+    },
+    reset() {
+      this.items = []
+      this.initialize()
+    },
+    initialize() {
+      // 초기 데이터를 추가하는 부분입니다.
+      // 필요에 따라서 데이터를 초기화할 수 있습니다.
+    },
+  },
+}
 </script>
-
-<style>
-/* 테이블 기본 스타일 */
-table {
-  width: 100%;
-  border-collapse: separate; /* 각 셀을 분리 */
-  border-spacing: 0; /* 셀 사이의 간격 */
-}
-
-/* 테이블 헤더와 셀 스타일 */
-th, td {
-  border: 1px solid #000; /* 검은색 테두리 */
-  padding: 8px; /* 안쪽 여백 */
-  text-align: left; /* 텍스트 왼쪽 정렬 */
-}
-
-/* 헤더 특별 스타일 */
-th {
-  background-color: #f2f2f2; /* 배경색 */
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-.upper_tab{
-  background-color: hotpink;
-  border: none;
-  color: black;
-  
-  padding: 15px 30px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 10px;
-  cursor: pointer;
-}
-
-.left_tab {
-    border-collapse: collapse; /* 테두리 겹침 없앰 */
-    margin: 0; /* 상단 및 왼쪽 여백 없앰 */
-  }
-  .left_tab, .left_tab th, .left_tab td {
-    border: 1px solid black; /* 테두리 설정 */
-  }
-  .left_tab th, .left_tab td {
-    text-align: center; /* 텍스트 가운데 정렬 */
-    padding: 0px; /* 셀 안쪽 여백 */
-    
-  }
-.left_tab_button{
-  background-color: gray;
-  padding: 10px 10px;
-  cursor: pointer;
-
-
-}
-</style>
