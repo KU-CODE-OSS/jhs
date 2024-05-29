@@ -4,6 +4,15 @@
       <v-toolbar-title>전공과목</v-toolbar-title>
       <v-divider class="mx-2" inset vertical></v-divider>
       <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        label="Search"
+        prepend-inner-icon="mdi-magnify"
+        variant="outlined"
+        hide-details
+        single-line
+        class="ma-2"
+      ></v-text-field>
       <v-btn color="primary" dark class="mb-2" @click="dialog = true">New Item</v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="500px">
@@ -90,7 +99,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-data-table :headers="headers" :items="items" class="elevation-1">
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :search="search"
+      class="elevation-1"
+    >
       <template v-slot:items="props">
         <td>{{ props.item.year }}</td>
         <td>{{ props.item.semester }}</td>
@@ -121,20 +135,20 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      search: '',
       dialog: false,
       headers: [
-        { text: 'Year', value: 'year' },
-        { text: 'Semester', value: 'semester' },
-        { text: 'Course Name', value: 'name' },
-        { text: 'Course ID', value: 'course_id' },
-        { text: 'Professor', value: 'prof' },
-        { text: 'TA', value: 'ta' },
-        { text: 'Student Count', value: 'student_count' },
-        { text: 'Total Commits', value: 'total_commits' },
-        { text: 'Avg Commits', value: 'avg_commits' },
-        { text: 'Repository Count', value: 'repository_count' },
-        { text: 'Contributor Count', value: 'contributor_count' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { title: 'Year', key: 'year' },
+        { title: 'Semester', key: 'semester' },
+        { title: 'Course Name', key: 'name' },
+        { title: 'Course ID', key: 'course_id' },
+        { title: 'Professor', key: 'prof' },
+        { title: 'TA', key: 'ta' },
+        { title: 'Student Count', key: 'student_count' },
+        { title: 'Total Commits', key: 'total_commits' },
+        { title: 'Avg Commits', key: 'avg_commits' },
+        { title: 'Repository Count', key: 'repository_count' },
+        { title: 'Contributor Count', key: 'contributor_count' },
       ],
       items: [],
       editedIndex: -1,
@@ -178,8 +192,8 @@ export default {
           params: {
             course_id: 'COSE341-01',
             year: 2024,
-            semester: 1
-          }
+            semester: 1,
+          },
         });
         this.items = [response.data];
       } catch (error) {
@@ -187,38 +201,38 @@ export default {
       }
     },
     editItem(item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
     deleteItem(item) {
-      const index = this.items.indexOf(item)
+      const index = this.items.indexOf(item);
       if (confirm('Are you sure you want to delete this item?')) {
-        this.items.splice(index, 1)
+        this.items.splice(index, 1);
       }
     },
     close() {
-      this.dialog = false
+      this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      }, 300)
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      }, 300);
     },
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem)
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.items.push(this.editedItem)
+        this.items.push(this.editedItem);
       }
-      this.close()
+      this.close();
     },
     reset() {
-      this.items = []
-      this.fetchData()
+      this.items = [];
+      this.fetchData();
     },
   },
   mounted() {
     this.fetchData();
-  }
+  },
 }
 </script>

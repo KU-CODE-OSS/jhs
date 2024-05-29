@@ -4,6 +4,15 @@
         <v-toolbar-title>사용자</v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
         <v-spacer></v-spacer>
+        <v-text-field
+        v-model="search"
+        label="Search"
+        prepend-inner-icon="mdi-magnify"
+        variant="outlined"
+        hide-details
+        single-line
+        class="ma-2"
+      ></v-text-field>
         <v-btn color="primary" dark class="mb-2" @click="dialog = true">New Item</v-btn>
       </v-toolbar>
       <v-dialog v-model="dialog" max-width="500px">
@@ -96,7 +105,12 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-data-table :headers="headers" :items="items" class="elevation-1">
+      <v-data-table 
+      :headers="headers" 
+      :items="items" 
+      :search="search" 
+      class="elevation-1"
+      >
         <template v-slot:item="props">
           <tr>
             <td>{{ props.item.year }}</td>
@@ -130,21 +144,22 @@
   export default {
     data() {
       return {
+        search: '',
         dialog: false,
         headers: [
-          { text: 'Year', value: 'year' },
-          { text: 'Semester', value: 'semester' },
-          { text: 'Name', value: 'name' },
-          { text: 'Department', value: 'department' },
-          { text: 'ID', value: 'id' },
-          { text: 'Enrollment', value: 'enrollment' },
-          { text: 'Github_id', value: 'github_id' },
-          { text: 'Course_name', value: 'course_name' },
-          { text: 'Commit', value: 'commit' },
-          { text: 'PR', value: 'pr' },
-          { text: 'Issue', value: 'issue' },
-          { text: 'Num_repos', value: 'num_repos' },
-          { text: 'Actions', value: 'actions', sortable: false },
+          { title: 'Year', key: 'year' },
+          { title: 'Semester', key: 'semester' },
+          { title: 'Name', key: 'name' },
+          { title: 'Department', key: 'department' },
+          { title: 'ID', key: 'id' },
+          { title: 'Enrollment', key: 'enrollment' },
+          { title: 'Github_id', key: 'github_id' },
+          { title: 'Course_name', key: 'course_name' },
+          { title: 'Commit', key: 'commit' },
+          { title: 'PR', key: 'pr' },
+          { title: 'Issue', key: 'issue' },
+          { title: 'Num_repos', key: 'num_repos' },
+          { title: 'Actions', key: 'actions', sortable: false },
         ],
         items: [],
         editedIndex: -1,
