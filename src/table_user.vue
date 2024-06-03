@@ -159,7 +159,7 @@
           { title: 'PR', key: 'pr' },
           { title: 'Issue', key: 'issue' },
           { title: 'Num_repos', key: 'num_repos' },
-          { title: 'Actions', key: 'actions', sortable: false },
+        //   { title: 'Actions', key: 'actions', sortable: false },
         ],
         items: [],
         editedIndex: -1,
