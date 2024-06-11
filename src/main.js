@@ -6,6 +6,8 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css' // icon
+
 
 // 개발 서버의 주소를 설정합니다.
 axios.defaults.baseURL = 'http://43.155.173.127:8000'
@@ -19,6 +21,9 @@ app.config.globalProperties.$axios = axios
 const vuetify = createVuetify({
   components,
   directives,
+  icons: { // icon
+    defaultSet: 'mdi',
+  },
 })
 
 // Vue 앱에 router와 vuetify를 적용하고 마운트합니다.
