@@ -1,9 +1,11 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <v-toolbar-title>전공과목</v-toolbar-title>
+      <!-- <v-toolbar-title >전공과목</v-toolbar-title> -->
       <v-divider class="mx-2" inset vertical></v-divider>
       <v-spacer></v-spacer>
+      <!-- 파일 import 버튼 -->
+      <!-- 검색 필드 -->
       <v-text-field
         v-model="search"
         label="Search"
@@ -13,6 +15,8 @@
         single-line
         class="ma-2"
       ></v-text-field>
+      <v-btn color="primary" dark class="mb-2" @click="importFile">Import</v-btn>
+
       <v-btn color="primary" dark class="mb-2" @click="dialog = true">New Item</v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="500px">
@@ -186,6 +190,48 @@ export default {
     },
   },
   methods: {
+    async importFile() {
+      try {
+        const file = await this.selectFile();
+        if (file) {
+          console.log("Selected file:", file);
+          await this.uploadFile(file);
+        }
+      } catch (error) {
+        console.error('Error importing file:', error);
+      }
+    },
+    selectFile() {
+      return new Promise((resolve, reject) => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.xlsx, .xls, .csv'; // 허용할 파일 형식 지정
+        input.onchange = (e) => {
+          const file = e.target.files[0];
+          resolve(file);
+        };
+        input.click();
+      });
+    },
+    async uploadFile(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      console.log("Uploading file:", file);
+      
+      try {
+        const response = await axios.post('http://localhost/api/account/student_excel_import', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        // 파일 import 후에 할 일 추가
+        console.log('File imported successfully:', response);
+      } catch (error) {
+        console.error('Error importing file:', error);
+      }
+    },
+
     async fetchData() {
       try {
         const response = await axios.get('http://localhost/api/course/course_read_db', {
@@ -235,4 +281,6 @@ export default {
     this.fetchData();
   },
 }
+
+
 </script>

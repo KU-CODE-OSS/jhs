@@ -1,19 +1,21 @@
 <template>
-  <v-text-field
-    v-model="search"
-    label="Search"
-    prepend-inner-icon="mdi-magnify"
-    variant="outlined"
-    hide-details
-    single-line
-  ></v-text-field>
+  <div class="search-container">
+    <v-text-field
+      v-model="search"
+      label="Search"
+      prepend-inner-icon="mdi-magnify"
+      variant="outlined"
+      hide-details
+      single-line
+    ></v-text-field>
+  </div>
   <v-data-table
     :group-by="groupBy"
     :headers="headers"
     :items="filteredStudents"
     item-value="name"
   >
-    <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+    <template v-slot:group-header="{ item, toggleGroup, isGroupOpen }">
       <tr>
         <td>
           <v-btn
@@ -42,7 +44,7 @@
         <td></td>
         <td></td>
         <td>{{ item.department }}</td>
-        <td>{{ item.id }}</td>
+        <td></td>
         <td>{{ item.enrollment }}</td>
         <td>{{ item.github_id }}</td>
         <td>{{ item.year }}</td>
@@ -58,123 +60,143 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from 'axios'
 
-  export default {
-    data() {
-      return {
-        search: '',
-        groupBy: [
+export default {
+  data() {
+    return {
+      search: '',
+      groupBy: [
+        {
+          key: 'id',
+          order: 'asc',
+        },
+      ],
+      headers: [
+        { title: '이름', key: 'name' },
+        { title: '학과', key: 'department' },
+        { title: '학번', key: 'id' },
+        { title: '재학상태', key: 'enrollment' },
+        { title: 'GitHub ID', key: 'github_id' },
+        { title: '연도', key: 'year' },
+        { title: '학기', key: 'semester' },
+        { title: '과목명', key: 'course_name' },
+        { title: 'Commit 수', key: 'commit' },
+        { title: 'PR 수', key: 'pr' },
+        { title: 'Issue 수', key: 'issue' },
+        { title: 'Repo 수', key: 'num_repos' },
+      ],
+      students: [],
+      groupInfo: {},
+    }
+  },
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get(
+          'http://localhost/api/account/student_read_db',
           {
-            key: 'name',
-            order: 'asc',
-          },
-        ],
-        headers: [
-          { title: 'Name', key: 'name' },
-          { title: 'Department', key: 'department' },
-          { title: 'ID', key: 'id' },
-          { title: 'Enrollment', key: 'enrollment' },
-          { title: 'Github_id', key: 'github_id' },
-          { title: 'Year', key: 'year' },
-          { title: 'Semester', key: 'semester' },
-          { title: 'Course_name', key: 'course_name' },
-          { title: 'Commit', key: 'commit' },
-          { title: 'PR', key: 'pr' },
-          { title: 'Issue', key: 'issue' },
-          { title: 'Num_repos', key: 'num_repos' },
-        ],
-        students: [],
-        groupInfo: {},
+            params: {
+              github_id: 'kyne0127',
+            },
+          }
+        )
+        this.processData(response.data) // 데이터를 처리하도록 수정
+        console.log(response.data) // response.data를 콘솔에 출력
+      } catch (error) {
+        console.error('Error fetching data:', error)
       }
     },
-    created() {
-      this.fetchData()
-    },
-    methods: {
-      async fetchData() {
-        try {
-          const response = await axios.get(
-            'http://localhost/api/account/student_read_db',
-            {
-              params: {
-                github_id: 'kyne0127',
-              },
-            }
-          )
-          this.processData(response.data) // 데이터를 처리하도록 수정
-          console.log(response.data) // response.data를 콘솔에 출력
-        } catch (error) {
-          console.error('Error fetching data:', error)
+    processData(data) {
+      const groupInfo = {}
+      const students = []
+
+      data.forEach(group => {
+        const [groupItem, ...studentItems] = group
+
+        groupInfo[groupItem.id] = {
+          name: groupItem.name,
+          department: groupItem.department,
+          id: groupItem.id,
+          enrollment: groupItem.enrollment,
+          github_id: groupItem.github_id,
+          year: groupItem.year,
+          semester: groupItem.semester,
+          course_name: groupItem.course_name,
+          commit: groupItem.total_commit,
+          pr: groupItem.total_pr,
+          issue: groupItem.total_issue,
+          num_repos: groupItem.total_repos,
         }
-      },
-      processData(data) {
-        const groupInfo = {}
-        const students = []
 
-        data.forEach(group => {
-          const [groupItem, ...studentItems] = group
-
-          groupInfo[groupItem.name] = {
-            name: groupItem.name,
-            department: groupItem.department,
-            id: groupItem.id,
-            enrollment: groupItem.enrollment,
-            github_id: groupItem.github_id,
-            year: groupItem.year,
-            semester: groupItem.semester,
-            course_name: groupItem.course_name,
-            commit: groupItem.total_commit,
-            pr: groupItem.total_pr,
-            issue: groupItem.total_issue,
-            num_repos: groupItem.total_repo,
-          }
-
-          studentItems.forEach(student => {
-            students.push({
-              name: student.name,
-              year: student.year,
-              semester: student.semester,
-              department: student.department,
-              id: student.id,
-              enrollment: student.enrollment,
-              github_id: student.github_id,
-              course_name: student.course_name,
-              commit: student.commit,
-              pr: student.pr,
-              issue: student.issue,
-              num_repos: student.num_repos,
-            })
+        studentItems.forEach(student => {
+          students.push({
+            name: student.name,
+            year: student.year,
+            semester: student.semester,
+            department: student.department,
+            id: student.id,
+            enrollment: student.enrollment,
+            github_id: student.github_id,
+            course_name: student.course_name,
+            commit: student.commit,
+            pr: student.pr,
+            issue: student.issue,
+            num_repos: student.num_repos,
           })
         })
+      })
 
-        this.groupInfo = groupInfo
-        this.students = students
-      },
+      this.groupInfo = groupInfo
+      this.students = students
     },
-    computed: {
-      filteredStudents() {
-        const search = this.search.toLowerCase()
-        return this.students.filter(student => {
-          const group = this.groupInfo[student.name]
-          return (
-            student.name.toLowerCase().includes(search) ||
-            (group.year && group.year.toString().includes(search)) ||
-            (group.semester && group.semester.toString().includes(search)) ||
-            group.name.toLowerCase().includes(search) ||
-            group.department.toLowerCase().includes(search) ||
-            group.id.toLowerCase().includes(search) ||
-            group.enrollment.toLowerCase().includes(search) ||
-            group.github_id.toLowerCase().includes(search) ||
-            (group.course_name &&
-              group.course_name.toLowerCase().includes(search)) ||
-            group.commit.toString().includes(search) ||
-            group.pr.toString().includes(search) ||
-            group.issue.toString().includes(search) ||
-            group.num_repos.toString().includes(search)
-          )
-        })
-      },
+  },
+  computed: {
+    filteredStudents() {
+      const search = this.search.toLowerCase()
+      return this.students.filter(student => {
+        const group = this.groupInfo[student.id]
+        return (
+          // 그룹 정보에서 검색 (year, pr 등의 그룹 검색에서 필요없는 것도 일단 남겨둠)
+          (group.year && group.year.toString().includes(search)) ||
+          (group.semester && group.semester.toString().includes(search)) ||
+          group.name.toLowerCase().includes(search) ||
+          group.department.toLowerCase().includes(search) ||
+          group.id.toLowerCase().includes(search) ||
+          group.enrollment.toLowerCase().includes(search) ||
+          group.github_id.toLowerCase().includes(search) ||
+          (group.course_name && 
+            group.course_name.toLowerCase().includes(search)) ||
+          group.commit.toString().includes(search) ||
+          group.pr.toString().includes(search) ||
+          group.issue.toString().includes(search) ||
+          group.num_repos.toString().includes(search) ||
+          // 학생 정보에서 검색
+          student.name.toLowerCase().includes(search) ||
+          student.course_name.toLowerCase().includes(search) ||
+          student.year.toString().includes(search) ||
+          student.semester.toString().includes(search) ||
+          student.commit.toString().includes(search) ||
+          student.pr.toString().includes(search) ||
+          student.issue.toString().includes(search)
+        )
+      })
     },
-  }
+  },
+}
 </script>
+
+<style scoped>
+.search-container {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽으로 정렬 */
+  margin-bottom: 10px;
+}
+
+.search-container .v-text-field {
+  max-width: 300px; /* 원하는 크기로 조정 */
+}
+</style>

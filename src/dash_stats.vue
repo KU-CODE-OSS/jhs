@@ -66,6 +66,12 @@
           <v-col>
             <v-sheet min-height="70vh" rounded="lg">
               <v-tabs-window v-model="tab">
+                    <!-- 절대 위치로 v-tab 추가 -->
+    <v-tabs v-model="tab" class="absolute-tab">
+      <v-tab>전공과목</v-tab>
+      <v-tab>사용자</v-tab>
+      <!-- 필요에 따라 더 많은 탭 추가. 왠진 모르겠는데 option이랑 겹치지만 작동함...-->
+    </v-tabs>
                 <v-tabs-window-item value="option-1">
                   <table-major-component/>
                 </v-tabs-window-item>
@@ -184,3 +190,14 @@ export default {
   },
 }
 </script>
+
+<style>
+/* 절대 위치 스타일 */
+.absolute-tab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* 필요에 따라 z-index 조정 */
+  background-color: white; /* 필요에 따라 배경색 조정 */
+}
+</style>
