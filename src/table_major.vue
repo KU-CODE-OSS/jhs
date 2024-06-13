@@ -15,9 +15,9 @@
         single-line
         class="ma-2"
       ></v-text-field>
-      <v-btn color="primary" dark class="mb-2" @click="importFile">Import</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="importFile" prepend-icon="mdi-import">Import</v-btn>
 
-      <v-btn color="primary" dark class="mb-2" @click="dialog = true">New Item</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="dialog = true" prepend-icon="mdi-plus">New Item</v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
@@ -142,17 +142,17 @@ export default {
       search: '',
       dialog: false,
       headers: [
-        { title: 'Year', key: 'year' },
-        { title: 'Semester', key: 'semester' },
-        { title: 'Course Name', key: 'name' },
-        { title: 'Course ID', key: 'course_id' },
-        { title: 'Professor', key: 'prof' },
-        { title: 'TA', key: 'ta' },
-        { title: 'Student Count', key: 'student_count' },
-        { title: 'Total Commits', key: 'total_commits' },
-        { title: 'Avg Commits', key: 'avg_commits' },
-        { title: 'Repository Count', key: 'repository_count' },
-        { title: 'Contributor Count', key: 'contributor_count' },
+        { title: '연도', key: 'year' },
+        { title: '과목', key: 'semester' },
+        { title: '과목명', key: 'name' },
+        { title: '학수번호', key: 'course_id' },
+        { title: '교수', key: 'prof' },
+        { title: '조교', key: 'ta' },
+        { title: '학생 수', key: 'student_count' },
+        { title: '총 Commit 수', key: 'total_commits' },
+        { title: '평균 Commit 수', key: 'avg_commits' },
+        { title: 'Repo 수', key: 'repository_count' },
+        { title: '기여자 수', key: 'contributor_count' },
       ],
       items: [],
       editedIndex: -1,

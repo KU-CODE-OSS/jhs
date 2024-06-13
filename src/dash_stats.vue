@@ -10,10 +10,10 @@
         </v-avatar>
 
         <v-btn @click="goToDashboard">이름미정</v-btn>
-        <v-btn>정보관리</v-btn> 
-        <v-btn @click="goToStatistic">통계분석</v-btn>
-        <v-btn>커뮤니티</v-btn>
-        <v-btn>공지사항</v-btn>
+        <v-btn prepend-icon="mdi-information">정보관리</v-btn> 
+        <v-btn @click="goToStatistic" prepend-icon="mdi-chart-bar">통계분석</v-btn>
+        <v-btn prepend-icon="mdi-account-group">커뮤니티</v-btn>
+        <v-btn prepend-icon="mdi-bulletin-board">공지사항</v-btn>
 
         <v-spacer></v-spacer>
 
@@ -31,6 +31,28 @@
       </v-container>
     </v-app-bar>
 
+    <v-container>
+      <v-row>
+        <!-- Filter Box on the Left -->
+        <v-col cols="3">
+          <filter-box
+            :years="years"
+            :selected-years="selectedYears"
+            @update:selectedYears="selectedYears = $event"
+          />
+        </v-col>
+
+        <!-- Data Table on the Right -->
+        <v-col cols="9">
+          <table-component
+            :search="search"
+            :selected-years="selectedYears"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+
+
     <v-main class="bg-grey-lighten-3">
       <v-container>
         <v-row>
@@ -39,7 +61,7 @@
               <v-list rounded="lg">
                 <div class="d-flex flex-row">
                   <v-tabs v-model="tab" color="primary" direction="vertical">
-                    <v-tab
+                    <!-- <v-tab
                       prepend-icon="mdi-account"
                       text="표"
                       value="option-1"
@@ -48,7 +70,7 @@
                       prepend-icon="mdi-lock"
                       text="그래프"
                       value="option-2"
-                    ></v-tab>
+                    ></v-tab> -->
                   </v-tabs>
                 </div>
 
@@ -65,20 +87,16 @@
 
           <v-col>
             <v-sheet min-height="70vh" rounded="lg">
-              <v-tabs-window v-model="tab">
-                    <!-- 절대 위치로 v-tab 추가 -->
-    <v-tabs v-model="tab" class="absolute-tab">
-      <v-tab>전공과목</v-tab>
-      <v-tab>사용자</v-tab>
-      <!-- 필요에 따라 더 많은 탭 추가. 왠진 모르겠는데 option이랑 겹치지만 작동함...-->
-    </v-tabs>
-                <v-tabs-window-item value="option-1">
-                  <table-major-component/>
-                </v-tabs-window-item>
-
-                <v-tabs-window-item value="option-2">
-                  <table-user-component/>
-                </v-tabs-window-item>
+              <v-tabs-window v-model="table_tab">
+                <!-- 절대 위치로 v-tab 추가 -->
+                <v-tabs v-model="table_tab" class="absolute-tab">
+                  <v-tab value="subject" prepend-icon="mdi-book-open-variant-outline">전공과목</v-tab>
+                  <v-tab value="user" prepend-icon="mdi-account-multiple">사용자</v-tab>
+                  <v-tab value="repository" prepend-icon="mdi-source-repository-multiple">레포지토리</v-tab>
+                </v-tabs>
+                <v-tabs-window-item value="subject"> <table-major-component/> </v-tabs-window-item>
+                <v-tabs-window-item value="user"> <table-user-component/> </v-tabs-window-item>
+                <v-tabs-window-item value="repository"><div>개발 중</div> <!-- <table-repo-component/> --> </v-tabs-window-item>
               </v-tabs-window>
             </v-sheet>
           </v-col>
@@ -92,9 +110,10 @@
 import { ref } from 'vue'
 import TableMajorComponent from './table_major.vue'
 import TableUserComponent from './table_user.vue'
+import FilterBox from './filterbox.vue'
 
 const dialog = ref(false)
-const tab = ref('option-1')
+const table_tab = ref('subject')
 </script>
 
 <script>
@@ -103,6 +122,7 @@ export default {
   components: {
     TableMajorComponent,
     TableUserComponent,
+    FilterBox
   },
   data() {
     return {
@@ -140,6 +160,9 @@ export default {
       defaultItem: {
         // 기본 항목 데이터
       },
+      search: '',
+      years: ['2024', '2023', '2022', '2021'],
+      selectedYears: [],
     }
   },
   computed: {

@@ -16,7 +16,7 @@
     item-value="name"
   >
     <template v-slot:group-header="{ item, toggleGroup, isGroupOpen }">
-      <tr>
+      <tr :key="`group-${item.value}`">
         <td>
           <v-btn
             :icon="isGroupOpen(item) ? '$expand' : '$next'"
@@ -40,7 +40,7 @@
       </tr>
     </template>
     <template v-slot:item="{ item }">
-      <tr>
+      <tr :key="item.key">
         <td></td>
         <td></td>
         <td>{{ item.department }}</td>
@@ -104,8 +104,7 @@ export default {
             },
           }
         )
-        this.processData(response.data) // 데이터를 처리하도록 수정
-        console.log(response.data) // response.data를 콘솔에 출력
+        this.processData(response.data)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -132,8 +131,10 @@ export default {
           num_repos: groupItem.total_repos,
         }
 
-        studentItems.forEach(student => {
+        studentItems.forEach((student, index) => {
+          const uniqueKey = `${student.id}-${index}-${student.course_name}-${student.commit}-${student.pr}-${student.issue}-${student.num_repos}`;
           students.push({
+            key: uniqueKey, // 고유한 key 값 생성
             name: student.name,
             year: student.year,
             semester: student.semester,
@@ -147,8 +148,12 @@ export default {
             issue: student.issue,
             num_repos: student.num_repos,
           })
+          console.log(`Generated key for student: ${uniqueKey}`); // 디버깅 출력
         })
       })
+
+      console.log('Processed Group Info:', groupInfo)
+      console.log('Processed Students:', students)
 
       this.groupInfo = groupInfo
       this.students = students
