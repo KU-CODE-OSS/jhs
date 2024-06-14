@@ -220,7 +220,7 @@ export default {
       console.log("Uploading file:", file);
       
       try {
-        const response = await axios.post('http://localhost/api/account/student_excel_import', formData, {
+        const response = await axios.post('http://119.28.232.108:8000/api/account/student_excel_import', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -234,7 +234,7 @@ export default {
 
     async fetchData() {
       try {
-        const response = await axios.get('http://localhost/api/course/course_read_db', {
+        const response = await axios.get('http://119.28.232.108:8000/api/course/course_read_db', {
           params: {
             course_id: 'COSE341-01',
             year: 2024,

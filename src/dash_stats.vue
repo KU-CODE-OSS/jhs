@@ -56,21 +56,11 @@
     <v-main class="bg-grey-lighten-3">
       <v-container>
         <v-row>
-          <v-col cols="2">
+          <!-- <v-col cols="2">
             <v-sheet rounded="lg">
               <v-list rounded="lg">
                 <div class="d-flex flex-row">
                   <v-tabs v-model="tab" color="primary" direction="vertical">
-                    <!-- <v-tab
-                      prepend-icon="mdi-account"
-                      text="표"
-                      value="option-1"
-                    ></v-tab>
-                    <v-tab
-                      prepend-icon="mdi-lock"
-                      text="그래프"
-                      value="option-2"
-                    ></v-tab> -->
                   </v-tabs>
                 </div>
 
@@ -83,7 +73,7 @@
                 ></v-list-item>
               </v-list>
             </v-sheet>
-          </v-col>
+          </v-col> -->
 
           <v-col>
             <v-sheet min-height="70vh" rounded="lg">
