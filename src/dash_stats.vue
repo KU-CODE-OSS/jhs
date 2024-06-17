@@ -13,7 +13,7 @@
         <v-btn prepend-icon="mdi-information">정보관리</v-btn> 
         <v-btn @click="goToStatistic" prepend-icon="mdi-chart-bar">통계분석</v-btn>
         <v-btn prepend-icon="mdi-account-group">커뮤니티</v-btn>
-        <v-btn prepend-icon="mdi-bulletin-board">공지사항</v-btn>
+        <v-btn prepend-icon="mdi-bulletin-board">공지사항</v-btn> 
 
         <v-spacer></v-spacer>
 
@@ -54,6 +54,8 @@
 
 
     <v-main class="bg-grey-lighten-3">
+      <div class="sidebar_filter_box"></div>
+      <div>
       <v-container>
         <v-row>
           <!-- <v-col cols="2">
@@ -79,19 +81,20 @@
             <v-sheet min-height="70vh" rounded="lg">
               <v-tabs-window v-model="table_tab">
                 <!-- 절대 위치로 v-tab 추가 -->
-                <v-tabs v-model="table_tab" class="absolute-tab">
-                  <v-tab value="subject" prepend-icon="mdi-book-open-variant-outline">전공과목</v-tab>
-                  <v-tab value="user" prepend-icon="mdi-account-multiple">사용자</v-tab>
+                <v-tabs v-model="table_tab" class="absolute-tab row_bar">
+                  <v-tab class="row_bar" value="subject" prepend-icon="mdi-book-open-variant-outline">전공과목</v-tab>
+                  <v-tab class="user_font" value="user" prepend-icon="mdi-account-multiple">사용자</v-tab>
                   <v-tab value="repository" prepend-icon="mdi-source-repository-multiple">레포지토리</v-tab>
                 </v-tabs>
                 <v-tabs-window-item value="subject"> <table-major-component/> </v-tabs-window-item>
                 <v-tabs-window-item value="user"> <table-user-component/> </v-tabs-window-item>
-                <v-tabs-window-item value="repository"><div>개발 중</div> <!-- <table-repo-component/> --> </v-tabs-window-item>
+                <v-tabs-window-item value="repository"> <toy-code/> </v-tabs-window-item>
               </v-tabs-window>
             </v-sheet>
           </v-col>
         </v-row>
       </v-container>
+    </div>
     </v-main>
   </v-app>
 </template>
@@ -101,6 +104,7 @@ import { ref } from 'vue'
 import TableMajorComponent from './table_major.vue'
 import TableUserComponent from './table_user.vue'
 import FilterBox from './filterbox.vue'
+import ToyCode from './toycode.vue'
 
 const dialog = ref(false)
 const table_tab = ref('subject')
@@ -212,5 +216,37 @@ export default {
   left: 0;
   z-index: 1000; /* 필요에 따라 z-index 조정 */
   background-color: white; /* 필요에 따라 배경색 조정 */
+}
+.sidebar_filter_box {
+  float: left;
+  width: 130px;
+  height: 520px;
+  border-radius: 3px;
+  background-color: red;
+  padding: 16px;
+  margin-left: 60px;
+  margin-top: 16px;
+  margin-right: 32px;
+}
+.row_bar {
+  color: black;
+  .v-btn__prepend{
+    color: blue;
+  }
+}
+.row_bar > .v-slide-group__container > .v-slide-group__content > button:hover{
+  .v-btn__content{
+    color: red;
+  }
+}
+
+.user_font {
+  .v-btn__content{
+    font-weight: bold;
+  }
+}
+
+.bg-grey-lighten-3{
+  padding-top: 16 px !important;
 }
 </style>

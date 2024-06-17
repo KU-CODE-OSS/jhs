@@ -1,11 +1,8 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <!-- <v-toolbar-title >전공과목</v-toolbar-title> -->
       <v-divider class="mx-2" inset vertical></v-divider>
       <v-spacer></v-spacer>
-      <!-- 파일 import 버튼 -->
-      <!-- 검색 필드 -->
       <v-text-field
         v-model="search"
         label="Search"
@@ -16,7 +13,6 @@
         class="ma-2"
       ></v-text-field>
       <v-btn color="primary" dark class="mb-2" @click="importFile" prepend-icon="mdi-import">Import</v-btn>
-
       <v-btn color="primary" dark class="mb-2" @click="dialog = true" prepend-icon="mdi-plus">New Item</v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="500px">
@@ -108,6 +104,7 @@
       :items="items"
       :search="search"
       class="elevation-1"
+      :loading="loading"
     >
       <template v-slot:items="props">
         <td>{{ props.item.year }}</td>
@@ -139,11 +136,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      loading: true,
       search: '',
       dialog: false,
       headers: [
         { title: '연도', key: 'year' },
-        { title: '과목', key: 'semester' },
+        { title: '학기', key: 'semester' },
         { title: '과목명', key: 'name' },
         { title: '학수번호', key: 'course_id' },
         { title: '교수', key: 'prof' },
@@ -205,7 +203,7 @@ export default {
       return new Promise((resolve, reject) => {
         const input = document.createElement('input');
         input.type = 'file';
-        input.accept = '.xlsx, .xls, .csv'; // 허용할 파일 형식 지정
+        input.accept = '.xlsx, .xls, .csv';
         input.onchange = (e) => {
           const file = e.target.files[0];
           resolve(file);
@@ -225,7 +223,6 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         });
-        // 파일 import 후에 할 일 추가
         console.log('File imported successfully:', response);
       } catch (error) {
         console.error('Error importing file:', error);
@@ -234,17 +231,15 @@ export default {
 
     async fetchData() {
       try {
-        const response = await axios.get('http://119.28.232.108:8000/api/course/course_read_db', {
-          params: {
-            course_id: 'COSE341-01',
-            year: 2024,
-            semester: 1,
-          },
-        });
-        this.items = [response.data];
+        this.loading = true
+        const response = await axios.get('http://119.28.232.108:8000/api/course/course_read_db');
+        console.log('API Response:', response.data); // 응답 데이터 로그 출력
+        this.items = response.data; // 응답 데이터를 직접 items에 할당
       } catch (error) {
         console.error('Error fetching data:', error);
-      }
+      } finally {
+        this.loading = false
+        }
     },
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
@@ -281,6 +276,4 @@ export default {
     this.fetchData();
   },
 }
-
-
 </script>
