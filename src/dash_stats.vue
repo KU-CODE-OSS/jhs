@@ -31,34 +31,12 @@
       </v-container>
     </v-app-bar>
 
-    <v-container>
-      <v-row>
-        <!-- Filter Box on the Left -->
-        <v-col cols="3">
-          <filter-box
-            :years="years"
-            :selected-years="selectedYears"
-            @update:selectedYears="selectedYears = $event"
-          />
-        </v-col>
-
-        <!-- Data Table on the Right -->
-        <v-col cols="9">
-          <table-component
-            :search="search"
-            :selected-years="selectedYears"
-          />
-        </v-col>
-      </v-row>
-    </v-container>
-
-
     <v-main class="bg-grey-lighten-3">
-      <div class="sidebar_filter_box"></div>
+      <div class="sidebar_filter_box">하나은행 01089146793907 정현승</div>
       <div>
       <v-container>
         <v-row>
-          <!-- <v-col cols="2">
+          <!-- <v-col cols="2"> 기존 왼쪽 Refresh 바
             <v-sheet rounded="lg">
               <v-list rounded="lg">
                 <div class="d-flex flex-row">
@@ -76,7 +54,6 @@
               </v-list>
             </v-sheet>
           </v-col> -->
-
           <v-col>
             <v-sheet min-height="70vh" rounded="lg">
               <v-tabs-window v-model="table_tab">
@@ -103,7 +80,6 @@
 import { ref } from 'vue'
 import TableMajorComponent from './table_major.vue'
 import TableUserComponent from './table_user.vue'
-import FilterBox from './filterbox.vue'
 import ToyCode from './toycode.vue'
 
 const dialog = ref(false)
@@ -116,7 +92,6 @@ export default {
   components: {
     TableMajorComponent,
     TableUserComponent,
-    FilterBox
   },
   data() {
     return {
@@ -154,9 +129,9 @@ export default {
       defaultItem: {
         // 기본 항목 데이터
       },
-      search: '',
-      years: ['2024', '2023', '2022', '2021'],
-      selectedYears: [],
+      // search: '',
+      // years: ['2024', '2023', '2022', '2021'],
+      // selectedYears: [],
     }
   },
   computed: {
@@ -222,7 +197,7 @@ export default {
   width: 130px;
   height: 520px;
   border-radius: 3px;
-  background-color: red;
+  background-color: rgba(68, 243, 135, 0.24);
   padding: 16px;
   margin-left: 60px;
   margin-top: 16px;
@@ -247,6 +222,6 @@ export default {
 }
 
 .bg-grey-lighten-3{
-  padding-top: 16 px !important;
+  padding-top: 16px !important;
 }
 </style>
