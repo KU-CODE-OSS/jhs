@@ -1,106 +1,140 @@
 <template>
   <div>
-    <div class="filter-container">
-      <filters
-        :students="students"
-        @update:filteredStudents="updateFilteredStudents"
-      ></filters>
-    </div>
-    
-    <div class="search-container">
-      <v-text-field
-        v-model="search"
-        label="Search"
-        prepend-inner-icon="mdi-magnify"
-        variant="outlined"
-        hide-details
-        single-line
-      ></v-text-field>
-    </div>
+    <v-row>
+      <v-col cols="10"> </v-col>
+      <v-col cols="0">
+        <filters
+          class="filter-container"
+          :students="students"
+          @update:filteredStudents="updateFilteredStudents"
+        ></filters>
+      </v-col>
+      <v-col cols="2" align="right">
+        <v-text-field
+          v-model="search"
+          label="Search"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+          hide-details
+          single-line
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <!-- <v-card> -->
+      <v-tabs align-tabs="end" v-model="table_or_chart">
+        <v-tab slim hide-slider color="blue" value="table">
+            <v-icon size="x-large" icon="mdi-table"></v-icon>
+            테이블
+        </v-tab>
+        <v-tab slim hide-slider color="blue" value="chart">
+            <v-icon size="x-large" icon="mdi-chart-box"></v-icon>
+            차트
+        </v-tab>
+      </v-tabs>
 
-    <v-data-table
-      :group-by="groupBy"
-      :headers="headers"
-      :items="filteredStudentsBySearch"
-      item-value="uniqueKey"
-      :loading="loading"
-    >
-      <template v-slot:group-header="{ item, toggleGroup, isGroupOpen }">
-        <tr>
-          <td>
-            <v-btn
-              :icon="isGroupOpen(item) ? '$expand' : '$next'"
-              size="small"
-              variant="text"
-              @click="toggleGroup(item)"
-            ></v-btn>
-          </td>
-          <td>{{ groupInfo[item.value]?.name }}</td>
-          <td>{{ groupInfo[item.value]?.department }}</td>
-          <td>{{ groupInfo[item.value]?.id }}</td>
-          <td>{{ groupInfo[item.value]?.enrollment }}</td>
-          <td>{{ groupInfo[item.value]?.github_id }}</td>
-          <td>{{ groupInfo[item.value]?.year }}</td>
-          <td>{{ groupInfo[item.value]?.semester }}</td>
-          <td>{{ groupInfo[item.value]?.course_name }}</td>
-          <td>{{ groupInfo[item.value]?.commit }}</td>
-          <td>{{ groupInfo[item.value]?.pr }}</td>
-          <td>{{ groupInfo[item.value]?.issue }}</td>
-          <td>{{ groupInfo[item.value]?.num_repos }}</td>
-        </tr>
-      </template>
-      <template v-slot:item="{ item }">
-        <tr>
-          <td></td> <!-- 그룹 -->
-          <td></td> <!-- 이름 -->
-          <td></td> <!-- 학과 -->
-          <td></td> <!-- 학번 -->
-          <td></td> <!-- 재학상태 -->
-          <td></td> <!-- GitHub ID -->
-          <td>{{ item.year }}</td>
-          <td>{{ item.semester }}</td>
-          <td>{{ item.course_name }}</td>
-          <td>{{ item.commit }}</td>
-          <td>{{ item.pr }}</td>
-          <td>{{ item.issue }}</td>
-          <td>{{ item.num_repos }}</td>
-        </tr>
-      </template>
-    </v-data-table>
+      <v-window v-model="table_or_chart">
+        <v-window-item value="table">
+          <v-data-table
+            :group-by="groupBy"
+            :headers="headers"
+            :items="filteredStudentsBySearch"
+            item-value="uniqueKey"
+            :loading="loading"
+            fixed-header
+            height="600px"
+          >
+            <template v-slot:group-header="{ item, toggleGroup, isGroupOpen }">
+              <tr :style="{ backgroundColor: isGroupOpen(item) ? '#f5f5f5' : '#ffffff' }">
+                <td>
+                  <v-btn
+                    :icon="isGroupOpen(item) ? '$expand' : '$next'"
+                    size="small"
+                    variant="text"
+                    @click="toggleGroup(item)"
+                  ></v-btn>
+                </td>
+                <td>{{ groupInfo[item.value]?.name }}</td>
+                <td>{{ groupInfo[item.value]?.department }}</td>
+                <td>{{ groupInfo[item.value]?.id }}</td>
+                <td>{{ groupInfo[item.value]?.enrollment }}</td>
+                <td>{{ groupInfo[item.value]?.github_id }}</td>
+                <td>{{ groupInfo[item.value]?.year }}</td>
+                <td>{{ groupInfo[item.value]?.semester }}</td>
+                <td>{{ groupInfo[item.value]?.course_name }}</td>
+                <td>{{ groupInfo[item.value]?.commit }}</td>
+                <td>{{ groupInfo[item.value]?.pr }}</td>
+                <td>{{ groupInfo[item.value]?.issue }}</td>
+                <td>{{ groupInfo[item.value]?.num_repos }}</td>
+              </tr>
+            </template>
+            <template v-slot:item="{ item }">
+              <tr>
+                <td><!-- 그룹 --></td>                
+                <td><!-- 이름 --></td>
+                <td><!-- 학과 --></td>
+                <td><!-- 학번 --></td>
+                <td><!-- 재학상태 --></td>
+                <td><!-- GitHub ID --></td>                
+                <td>{{ item.year }}</td>
+                <td>{{ item.semester }}</td>
+                <td>{{ item.course_name }}</td>
+                <td>{{ item.commit }}</td>
+                <td>{{ item.pr }}</td>
+                <td>{{ item.issue }}</td>
+                <td>{{ item.num_repos }}</td>
+              </tr>
+            </template>
+          </v-data-table>
+        </v-window-item>
+        <v-window-item value="chart" class="chart_user">
+        <!-- ↓↓↓ 차트 컴포넌트 ↓↓↓ -->
+            <!-- <chart_user></chart_user>  -->
+            <v-lazy>
+                <chart_user/> 
+            </v-lazy>
+        <!-- ↑↑↑ 차트 컴포넌트 ↑↑↑ -->
+        </v-window-item>
+      </v-window>
+    <!-- </v-card> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import Filters from './Filters.vue';
-
+import chart_user from './chart_user.vue';
+import chart_user_example from './chart_user_example.vue';
 export default {
   components: {
     Filters,
+    chart_user,
+    chart_user_example
   },
   data() {
     return {
+      table_or_chart: null,
       loading: true,
       search: '',
       groupBy: [
         {
+          align: 'center',
           key: 'id',
           order: 'asc',
         },
       ],
       headers: [
-        { title: '이름', key: 'name' },
-        { title: '학과', key: 'department' },
-        { title: '학번', key: 'id' },
-        { title: '재학상태', key: 'enrollment' },
-        { title: 'GitHub ID', key: 'github_id' },
-        { title: '연도', key: 'year' },
-        { title: '학기', key: 'semester' },
-        { title: '과목명', key: 'course_name' },
-        { title: 'Commit 수', key: 'commit' },
-        { title: 'PR 수', key: 'pr' },
-        { title: 'Issue 수', key: 'issue' },
-        { title: 'Repo 수', key: 'num_repos' },
+        { align: 'center', title: '이름', key: 'name', width:'6%'},
+        { align: 'center', title: '학과', key: 'department', width:'15%' },
+        { align: 'center', title: '학번', key: 'id' },
+        { align: 'center', title: '재학상태', key: 'enrollment' , width:'7%'},
+        { align: 'center', title: 'GitHub ID', key: 'github_id', width:'10%' },
+        { align: 'center', title: '연도', key: 'year' , width:'6%'},
+        { align: 'center', title: '학기', key: 'semester', width:'5.5%' },
+        { align: 'center', title: '과목명', key: 'course_name' , width:'15%'},
+        { align: 'center', title: 'Commit 수', key: 'commit' },
+        { align: 'center', title: 'PR 수', key: 'pr', width:'6%'},
+        { align: 'center', title: 'Issue 수', key: 'issue', width:'7%' },
+        { align: 'center', title: 'Repo 수', key: 'num_repos', width:'7%' },
       ],
       students: [],
       groupInfo: {},
@@ -183,6 +217,40 @@ export default {
     },
     updateFilteredStudents(filtered) {
       this.filteredStudents = filtered;
+      this.updateGroupTotals(filtered);
+    },
+    updateGroupTotals(filteredStudents) {
+      const totals = {};
+
+      filteredStudents.forEach(student => {
+        if (!totals[student.id]) {
+          totals[student.id] = {
+            commit: 0,
+            pr: 0,
+            issue: 0,
+            num_repos: 0,
+          };
+        }
+
+        totals[student.id].commit += student.commit || 0;
+        totals[student.id].pr += student.pr || 0;
+        totals[student.id].issue += student.issue || 0;
+        totals[student.id].num_repos += student.num_repos || 0;
+      });
+
+      Object.keys(this.groupInfo).forEach(key => {
+        if (totals[key]) {
+          this.groupInfo[key].commit = totals[key].commit;
+          this.groupInfo[key].pr = totals[key].pr;
+          this.groupInfo[key].issue = totals[key].issue;
+          this.groupInfo[key].num_repos = totals[key].num_repos;
+        } else {
+          this.groupInfo[key].commit = 0;
+          this.groupInfo[key].pr = 0;
+          this.groupInfo[key].issue = 0;
+          this.groupInfo[key].num_repos = 0;
+        }
+      });
     },
   },
   computed: {
@@ -219,17 +287,32 @@ export default {
 
 <style scoped>
 .filter-container {
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
+  
+  /* align-content: center; */
 }
 
-.search-container {
-  display: flex;
+.search-container > div {
+  /* display: flex;
   justify-content: flex-end;
-  margin-bottom: 10px;
+  margin-bottom: 0px; */
+  flex-direction: row-reverse;
+  align-items: right ;
+  width : 200px !important;
 }
 
 .search-container .v-text-field {
   max-width: 300px;
+}
+
+.chart_user {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  margin-top: 60px;
+  width: 100%;
+  /* display: flex; */
 }
 </style>
   

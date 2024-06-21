@@ -32,28 +32,13 @@
     </v-app-bar>
 
     <v-main class="bg-grey-lighten-3">
-      <div class="sidebar_filter_box">하나은행 01089146793907 정현승</div>
+      <div class="sidebar_filter_box">
+        <img src="./assets/hana.png" alt="Filter Image" style="max-width: 100%; max-height: 100%;">
+        하나은행 01089146793907 정현승
+      </div>
       <div>
       <v-container>
         <v-row>
-          <!-- <v-col cols="2"> 기존 왼쪽 Refresh 바
-            <v-sheet rounded="lg">
-              <v-list rounded="lg">
-                <div class="d-flex flex-row">
-                  <v-tabs v-model="tab" color="primary" direction="vertical">
-                  </v-tabs>
-                </div>
-
-                <v-divider class="my-2"></v-divider>
-
-                <v-list-item
-                  color="grey-lighten-4"
-                  title="Refresh"
-                  link
-                ></v-list-item>
-              </v-list>
-            </v-sheet>
-          </v-col> -->
           <v-col>
             <v-sheet min-height="70vh" rounded="lg">
               <v-tabs-window v-model="table_tab">
@@ -65,7 +50,7 @@
                 </v-tabs>
                 <v-tabs-window-item value="subject"> <table-major-component/> </v-tabs-window-item>
                 <v-tabs-window-item value="user"> <table-user-component/> </v-tabs-window-item>
-                <v-tabs-window-item value="repository"> <toy-code/> </v-tabs-window-item>
+                <v-tabs-window-item value="repository"> <table-repo-component/> </v-tabs-window-item>
               </v-tabs-window>
             </v-sheet>
           </v-col>
@@ -80,7 +65,7 @@
 import { ref } from 'vue'
 import TableMajorComponent from './table_major.vue'
 import TableUserComponent from './table_user.vue'
-import ToyCode from './toycode.vue'
+import TableRepoComponent from './table_repo.vue'
 
 const dialog = ref(false)
 const table_tab = ref('subject')
@@ -92,6 +77,7 @@ export default {
   components: {
     TableMajorComponent,
     TableUserComponent,
+    TableRepoComponent,
   },
   data() {
     return {
@@ -194,10 +180,10 @@ export default {
 }
 .sidebar_filter_box {
   float: left;
-  width: 130px;
+  width: 150px;
   height: 520px;
-  border-radius: 3px;
-  background-color: rgba(68, 243, 135, 0.24);
+  border-radius: 3px; 
+  background-color: #008485;
   padding: 16px;
   margin-left: 60px;
   margin-top: 16px;

@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-row>
+      <v-col cols="10"> </v-col>
+      <v-col cols="0">
+        <filters
+          class="filter-container"
+          :students="students"
+          @update:filteredStudents="updateFilteredStudents"
+        ></filters>
+      </v-col>
+    </v-row>
+
     <v-toolbar flat color="white">
       <v-divider class="mx-2" inset vertical></v-divider>
       <v-spacer></v-spacer>
@@ -26,67 +37,37 @@
               <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.year"
-                  label="Year"
+                  label="연도"
                 ></v-text-field>
               </v-col>
               <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.semester"
-                  label="Semester"
+                  label="학기"
                 ></v-text-field>
               </v-col>
               <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.name"
-                  label="Course Name"
+                  label="과목명"
                 ></v-text-field>
               </v-col>
               <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.course_id"
-                  label="Course ID"
+                  label="학수번호"
                 ></v-text-field>
               </v-col>
               <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.prof"
-                  label="Professor"
+                  label="교수"
                 ></v-text-field>
               </v-col>
               <v-col xs="12" sm="12" md="6">
                 <v-text-field
                   v-model="editedItem.ta"
-                  label="TA"
-                ></v-text-field>
-              </v-col>
-              <v-col xs="12" sm="12" md="6">
-                <v-text-field
-                  v-model="editedItem.student_count"
-                  label="Student Count"
-                ></v-text-field>
-              </v-col>
-              <v-col xs="12" sm="12" md="6">
-                <v-text-field
-                  v-model="editedItem.total_commits"
-                  label="Total Commits"
-                ></v-text-field>
-              </v-col>
-              <v-col xs="12" sm="12" md="6">
-                <v-text-field
-                  v-model="editedItem.avg_commits"
-                  label="Avg Commits"
-                ></v-text-field>
-              </v-col>
-              <v-col xs="12" sm="12" md="6">
-                <v-text-field
-                  v-model="editedItem.repository_count"
-                  label="Repository Count"
-                ></v-text-field>
-              </v-col>
-              <v-col xs="12" sm="12" md="6">
-                <v-text-field
-                  v-model="editedItem.contributor_count"
-                  label="Contributor Count"
+                  label="조교"
                 ></v-text-field>
               </v-col>
             </v-row>  
@@ -101,8 +82,7 @@
     </v-dialog>
     <v-data-table
       :headers="headers"
-      :items="items"
-      :search="search"
+      :items="filteredStudentsBySearch"
       class="elevation-1"
       :loading="loading"
     >
@@ -132,27 +112,33 @@
 
 <script>
 import axios from 'axios';
+import Filters from './table_major_filters.vue';
 
 export default {
+  components: {
+    Filters,
+  },
   data() {
     return {
       loading: true,
       search: '',
       dialog: false,
       headers: [
-        { title: '연도', key: 'year' },
-        { title: '학기', key: 'semester' },
-        { title: '과목명', key: 'name' },
-        { title: '학수번호', key: 'course_id' },
-        { title: '교수', key: 'prof' },
-        { title: '조교', key: 'ta' },
-        { title: '학생 수', key: 'student_count' },
-        { title: '총 Commit 수', key: 'total_commits' },
-        { title: '평균 Commit 수', key: 'avg_commits' },
-        { title: 'Repo 수', key: 'repository_count' },
-        { title: '기여자 수', key: 'contributor_count' },
+        { align: 'center', title: '연도', key: 'year' },
+        { align: 'center', title: '학기', key: 'semester' },
+        { align: 'center', title: '과목명', key: 'name' },
+        { align: 'center', title: '학수번호', key: 'course_id' },
+        { align: 'center', title: '교수', key: 'prof' },
+        { align: 'center', title: '조교', key: 'ta' },
+        { align: 'center', title: '학생 수', key: 'student_count' },
+        { align: 'center', title: '총 Commit 수', key: 'total_commits' },
+        { align: 'center', title: '평균 Commit 수', key: 'avg_commits' },
+        { align: 'center', title: 'Repo 수', key: 'repository_count' },
+        { align: 'center', title: '기여자 수', key: 'contributor_count' },
       ],
       items: [],
+      students: [],
+      filteredStudents: [],
       editedIndex: -1,
       editedItem: {
         year: null,
@@ -180,11 +166,29 @@ export default {
         repository_count: null,
         contributor_count: null,
       },
-    }
+    };
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
+    },
+    filteredStudentsBySearch() {
+      const search = this.search.toLowerCase();
+      return this.filteredStudents.filter(student => {
+        return (
+          student.year.toString().includes(search) ||
+          student.semester.toLowerCase().includes(search) ||
+          student.name.toLowerCase().includes(search) ||
+          student.course_id.toLowerCase().includes(search) ||
+          student.prof.toLowerCase().includes(search) ||
+          student.ta.toLowerCase().includes(search) ||
+          student.student_count.toString().includes(search) ||
+          student.total_commits.toString().includes(search) ||
+          student.avg_commits.toString().includes(search) ||
+          student.repository_count.toString().includes(search) ||
+          student.contributor_count.toString().includes(search)
+        );
+      });
     },
   },
   methods: {
@@ -218,7 +222,7 @@ export default {
       console.log("Uploading file:", file);
       
       try {
-        const response = await axios.post('http://119.28.232.108:8000/api/account/student_excel_import', formData, {
+        const response = await axios.post('http://localhost/api/account/student_excel_import', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -228,18 +232,22 @@ export default {
         console.error('Error importing file:', error);
       }
     },
-
     async fetchData() {
       try {
-        this.loading = true
-        const response = await axios.get('http://119.28.232.108:8000/api/course/course_read_db');
+        this.loading = true;
+        const response = await axios.get('http://localhost/api/course/course_read_db');
         console.log('API Response:', response.data); // 응답 데이터 로그 출력
         this.items = response.data; // 응답 데이터를 직접 items에 할당
+        this.students = response.data; // students에 할당
+        this.filteredStudents = response.data; // 필터링된 students에 할당
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        this.loading = false
-        }
+        this.loading = false;
+      }
+    },
+    updateFilteredStudents(filtered) {
+      this.filteredStudents = filtered;
     },
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
@@ -275,5 +283,21 @@ export default {
   mounted() {
     this.fetchData();
   },
-}
+};
 </script>
+
+<style scoped>
+.filter-container {
+  /* Custom styles for the filter container */
+}
+
+.search-container > div {
+  flex-direction: row-reverse;
+  align-items: right;
+  width: 200px !important;
+}
+
+.search-container .v-text-field {
+  max-width: 300px;
+}
+</style>

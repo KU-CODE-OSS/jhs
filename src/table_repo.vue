@@ -1,14 +1,16 @@
 <template>
-  <v-card title="Nutrition" flat>
+  <v-card title=" ." flat>
     <template v-slot:text>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        prepend-inner-icon="mdi-magnify"
-        variant="outlined"
-        hide-details
-        single-line
-      ></v-text-field>
+      <v-col cols="5">
+        <v-text-field class="search-container"
+            v-model="search"
+            label="Search"
+            prepend-inner-icon="mdi-magnify"
+            variant="outlined"
+            hide-details
+            single-line
+        ></v-text-field>
+      </v-col>
     </template>
 
     <v-data-table
@@ -16,6 +18,10 @@
       :items="repo"
       :search="search"
       :loading="loading"
+      align-items="center"
+      fixed-header
+      height="600px"
+      class="text-center"
     ></v-data-table>
   </v-card>
 </template>
@@ -30,18 +36,18 @@
         search: '',
         headers: [
           {
-            align: 'start',
+            align: 'center',
             key: 'name',
             sortable: false,
-            title: '레포지토리',
+            title: '레포지토리', fixed: true, width: '20%'
           },
-          { key: 'star_count', title: '스타 수' },
-          { key: 'fork_count', title: '포크 수' },
-          { key: 'commit_count', title: '커밋 수' },
-          { key: 'pr_count', title: 'PR 수' },
-          { key: 'total_issue_count', title: '이슈 수' },
-          { key: 'language', title: '언어' },
-          { key: 'contributors', title: '기여자 수' },
+          { align: 'center', key: 'star_count', title: '스타 수', width: '10%' },
+          { align: 'center', key: 'fork_count', title: '포크 수', width: '10%' },
+          { align: 'center', key: 'commit_count', title: '커밋 수', width: '10%' },
+          { align: 'center', key: 'pr_count', title: 'PR 수', width: '10%' },
+          { align: 'center', key: 'total_issue_count', title: '이슈 수', width: '10%' },
+          { align: 'center', key: 'language', title: '언어', fixed: true, width: '20%' },
+          { align: 'center', key: 'contributors', title: '기여자 수', width: '10%' },
         ],
         repo: [],
       }
@@ -54,7 +60,7 @@
         try {
           this.loading = true
           const response = await axios.get(
-            'http://localhost/api/repo/repo_course_read_db'
+            'http://localhost/api/repo/repo_read_db'
           )
           this.processTotal(response.data)
           console.log('Total Data:', response.data)
@@ -87,3 +93,16 @@
     },
   }
 </script>
+
+<style scoped>
+.search-container {
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  align-content: center;
+}
+
+.text-center th,
+.text-center td {
+  text-align: center !important;
+}
+</style>

@@ -16,7 +16,7 @@
       <v-col cols="4">
         <v-combobox
           v-model="departmentFilters"
-          :items="[...new Set(students.map(student => student.department))]"
+          :items="[...new Set(students.map(student => student.course_id))]"
           label="학과"
           @update:modelValue="applyFilter"
           chips
@@ -28,7 +28,7 @@
       <v-col cols="4">
         <v-combobox
           v-model="courseFilters"
-          :items="[...new Set(students.map(student => student.course_name))]"
+          :items="[...new Set(students.map(student => student.name))]"
           label="과목"
           @update:modelValue="applyFilter"
           chips
@@ -68,13 +68,13 @@ export default {
 
       if (this.departmentFilters.length > 0) {
         filtered = filtered.filter(student =>
-          this.departmentFilters.includes(student.department)
+          this.departmentFilters.includes(student.course_id)
         )
       }
 
       if (this.courseFilters.length > 0) {
         filtered = filtered.filter(student =>
-          this.courseFilters.includes(student.course_name)
+          this.courseFilters.includes(student.name)
         )
       }
 
