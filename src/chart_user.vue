@@ -1,168 +1,178 @@
 <template>
-    <div class="flex-box">
-        <div class="split-box">
-            <div ref="chart" class="chart-container"></div>
-        </div>
-        <div class="split-box">
-            <div ref="chart" class="chart-container"></div>
-        </div>
-    </div>
-</template>
+    <div ref="chart" style="width: 100%; height: 500px;"></div>
+  </template>
   
   <script>
   import * as echarts from 'echarts';
   
   export default {
-    name: 'MyChart',
+    name: 'chart_user',
+    props: {
+        totalCommitsByCourse: {
+            type: Object,
+            required: true
+        },
+        totalPRByCourse: {
+            type: Object,
+            required: true
+        },
+        totalIssueByCourse: {
+            type: Object,
+            required: true
+        },
+        totalRepoByCourse: {
+            type: Object,
+            required: true
+        }
+    },
     mounted() {
       this.initChart();
-      window.addEventListener('resize', this.resizeChart);
-    },
-    beforeDestroy() {
-      window.removeEventListener('resize', this.resizeChart);
     },
     methods: {
       initChart() {
-        const chart = echarts.init(this.$refs.chart);
-        const posList = [
-          'left', 'right', 'top', 'bottom', 'inside', 'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
-          'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
-        ];
-        const app = {};
-        app.configParameters = {
-          rotate: { min: -90, max: 90 },
-          align: { options: { left: 'left', center: 'center', right: 'right' } },
-          verticalAlign: { options: { top: 'top', middle: 'middle', bottom: 'bottom' } },
-          position: {
-            options: posList.reduce(function (map, pos) {
-              map[pos] = pos;
-              return map;
-            }, {})
-          },
-          distance: { min: 0, max: 100 }
-        };
-        app.config = {
-          rotate: 90,
-          align: 'left',
-          verticalAlign: 'middle',
-          position: 'insideBottom',
-          distance: 15,
-          onChange: function () {
-            const labelOption = {
-              rotate: app.config.rotate,
-              align: app.config.align,
-              verticalAlign: app.config.verticalAlign,
-              position: app.config.position,
-              distance: app.config.distance
-            };
-            chart.setOption({
-              series: [
-                { label: labelOption },
-                { label: labelOption },
-                { label: labelOption },
-                { label: labelOption }
-              ]
-            });
-          }
-        };
-        const labelOption = {
-          show: true,
-          position: app.config.position,
-          distance: app.config.distance,
-          align: app.config.align,
-          verticalAlign: app.config.verticalAlign,
-          rotate: app.config.rotate,
-          formatter: '{c}  {name|{a}}',
-          fontSize: 16,
-          rich: { name: {} }
-        };
-        const option = {
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: { type: 'shadow' }
-          },
-          legend: {
-            data: ['Forest', 'Steppe', 'Desert', 'Wetland']
-          },
-          toolbox: {
+        if (this.$refs.chart) {
+          const chart = echarts.init(this.$refs.chart);
+          const posList = [
+            'left', 'right', 'top', 'bottom', 'inside', 'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+            'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+          ];
+          const app = {};
+          app.configParameters = {
+            rotate: { min: -90, max: 90 },
+            align: { options: { left: 'left', center: 'center', right: 'right' } },
+            verticalAlign: { options: { top: 'top', middle: 'middle', bottom: 'bottom' } },
+            position: {
+              options: posList.reduce(function (map, pos) {
+                map[pos] = pos;
+                return map;
+              }, {})
+            },
+            distance: { min: 0, max: 100 }
+          };
+          app.config = {
+            rotate: 90,
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+            distance: 15,
+            onChange: function () {
+              const labelOption = {
+                rotate: app.config.rotate,
+                align: app.config.align,
+                verticalAlign: app.config.verticalAlign,
+                position: app.config.position,
+                distance: app.config.distance
+              };
+              chart.setOption({
+                series: [
+                  { label: labelOption },
+                  { label: labelOption },
+                  { label: labelOption },
+                  { label: labelOption }
+                ]
+              });
+            }
+          };
+          const labelOption = {
             show: true,
-            orient: 'vertical',
-            left: 'right',
-            top: 'center',
-            feature: {
-              mark: { show: true },
-              dataView: { show: true, readOnly: false },
-              magicType: { show: true, type: ['line', 'bar', 'stack'] },
-              restore: { show: true },
-              saveAsImage: { show: true }
-            }
-          },
-          xAxis: [
-            {
-              type: 'category',
-              axisTick: { show: false },
-              data: ['운영체제', '자료구조', '네트워크', '컴퓨터구조']
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value'
-            }
-          ],
-          series: [
-            {
-              name: 'PR 수',
-              type: 'bar',
-              barGap: 0,
-              label: labelOption,
-              emphasis: { focus: 'series' },
-              data: [320, 332, 301, 334, 390]
+            position: app.config.position,
+            distance: app.config.distance,
+            align: app.config.align,
+            verticalAlign: app.config.verticalAlign,
+            rotate: app.config.rotate,
+            formatter: '{c}  {name|{a}}',
+            fontSize: 16,
+            rich: { name: {} }
+          };
+  
+          // totalCommitsByCourse, totalPRByCourse, totalIssueByCourse, totalRepoByCourse에서 데이터를 추출하여 차트에 사용
+          const categories = Object.keys(this.totalCommitsByCourse);
+          const commitData = categories.map(category => this.totalCommitsByCourse[category]);
+          const prData = categories.map(category => this.totalPRByCourse[category]);
+          const issueData = categories.map(category => this.totalIssueByCourse[category]);
+          const repoData = categories.map(category => this.totalRepoByCourse[category]);
+  
+          const option = {
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: { type: 'shadow' }
             },
-            {
-              name: 'Issue 수',
-              type: 'bar',
-              label: labelOption,
-              emphasis: { focus: 'series' },
-              data: [220, 182, 191, 234, 290]
+            legend: {
+              data: ['Total Commits', 'Total PR', 'Total Issues', 'Total Repos']
             },
-            {
-              name: '커밋 수',
-              type: 'bar',
-              label: labelOption,
-              emphasis: { focus: 'series' },
-              data: [150, 232, 201, 154, 190]
+            toolbox: {
+              show: true,
+              orient: 'vertical',
+              left: 'right',
+              top: 'center',
+              feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar', 'stack'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+              }
             },
-            {
-              name: 'Repo 수',
-              type: 'bar',
-              label: labelOption,
-              emphasis: { focus: 'series' },
-              data: [98, 77, 101, 99, 40]
+            xAxis: [
+              {
+                type: 'category',
+                axisTick: { show: false },
+                data: categories
+              }
+            ],
+            yAxis: [
+              {
+                type: 'value'
+              }
+            ],
+            series: [
+              {
+                name: 'Total Commits',
+                type: 'bar',
+                barGap: 0,
+                label: labelOption,
+                emphasis: { focus: 'series' },
+                data: commitData
+              },
+              {
+                name: 'Total PR',
+                type: 'bar',
+                label: labelOption,
+                emphasis: { focus: 'series' },
+                data: prData
+              },
+              {
+                name: 'Total Issues',
+                type: 'bar',
+                label: labelOption,
+                emphasis: { focus: 'series' },
+                data: issueData
+              },
+              {
+                name: 'Total Repos',
+                type: 'bar',
+                label: labelOption,
+                emphasis: { focus: 'series' },
+                data: repoData
+                  
+              }
+            ]
+          };
+          chart.setOption(option);
+  
+          window.addEventListener('resize', () => {
+            if (chart) {
+              chart.resize();
             }
-          ]
-        };
-        chart.setOption(option);
-      },
-      resizeChart() {
-        const chart = echarts.getInstanceByDom(this.$refs.chart);
-        if (chart) {
-          chart.resize();
+          });
+        } else {
+          console.error('Chart DOM element not found.');
         }
       }
     }
   };
   </script>
   
-  <style>
-  .flex-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .split-box{
-    width: 100%;
-  }
+  <style scoped>
   </style>
   

@@ -88,9 +88,15 @@
         </v-window-item>
         <v-window-item value="chart" class="chart_user">
         <!-- ↓↓↓ 차트 컴포넌트 ↓↓↓ -->
-            <!-- <chart_user></chart_user>  -->
             <v-lazy>
-                <chart_user/> 
+                <!-- <chart_user/> -->
+                <chart_user
+                  :totalCommitsByCourse="totalCommitsByCourse" 
+                  :totalPRByCourse="totalPRByCourse"
+                  :totalIssueByCourse="totalIssueByCourse"
+                  :totalRepoByCourse="totalRepoByCourse"
+                />
+                <!-- <chart_user_example/>  -->
             </v-lazy>
         <!-- ↑↑↑ 차트 컴포넌트 ↑↑↑ -->
         </v-window-item>
@@ -140,6 +146,10 @@ export default {
       groupInfo: {},
       uniqueKeyCounter: 0,
       filteredStudents: [],
+      totalCommitsByCourse: {}, // props로 넘겨줄 데이터
+      totalPRByCourse: {} ,
+      totalIssueByCourse: {},
+      totalRepoByCourse: {},
     };
   },
   created() {
@@ -161,9 +171,18 @@ export default {
     },
     processTotal(data) {
       const groupInfo = {};
+      // total 값들을 저장할 변수들. 아직 연도별, 학과별 등의 필터링을 적용 안 함.
+      let total_commit_sum = 0; // total_commit 값을 합산할 변수
+      let total_pr_sum = 0; // total_pr 값을 합산할 변수
+      let total_issue_sum = 0; // total_issue 값을 합산할 변수
+      let total_repos_sum = 0; // total_repos 값을 합산할 변수
 
       data.forEach(groupItem => {
-        console.log('Group Item:', groupItem.name);
+        total_commit_sum += groupItem.total_commit; // total_commit 값을 더함
+        total_pr_sum += groupItem.total_pr; // total_pr 값을 더함
+        total_issue_sum += groupItem.total_issue; // total_issue 값을 더함
+        total_repos_sum += groupItem.total_repos; // total_repos 값을 더함
+
         groupInfo[groupItem.id] = {
           name: groupItem.name,
           department: groupItem.department,
@@ -181,20 +200,35 @@ export default {
         };
       });
 
-      console.log('Group Info:', groupInfo);
+    //   console.log('Group Info:', groupInfo);
       this.groupInfo = groupInfo;
+      
+      this.total_commit_sum = total_commit_sum; // total_commit 값을 저장
+      this.total_pr_sum = total_pr_sum; // total_pr 값을 저장
+      this.total_issue_sum = total_issue_sum; // total_issue 값을 저장
+      this.total_repos_sum = total_repos_sum; // total_repos 값을 저장
+
+    //   console.log('Total Commit:', this.total_commit_sum);
+    //   console.log('Total PR:', this.total_pr_sum);
+    //   console.log('Total Issue:', this.total_issue_sum);
+    //   console.log('Total Repos:', this.total_repos_sum);
     },
     async fetchCourse() {
       try {
         const response = await axios.get('http://localhost/api/account/student_read_course_info');
         this.processCourse(response.data);
-        console.log('Course Data:', response.data);
+        // console.log('Course Data:', response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },
     processCourse(data) {
       const students = [];
+
+      const totalCommitsByCourse = {};
+      const totalPRByCourse = {};
+      const totalIssueByCourse = {};
+      const totalRepoByCourse = {};
 
       data.forEach(student => {
         const uniqueKey = `item_${student.id}_${this.uniqueKeyCounter++}`;
@@ -208,12 +242,48 @@ export default {
           uniqueKey,
           ...student,
         });
+        // course_name별로 total_commit 계산
+        if (!totalCommitsByCourse[student.course_name]) {
+          totalCommitsByCourse[student.course_name] = 0;
+        }
+        totalCommitsByCourse[student.course_name] += student.commit;
+
+        // course_name별로 total_pr 계산
+        if (!totalPRByCourse[student.course_name]) {
+          totalPRByCourse[student.course_name] = 0;
+        }
+        totalPRByCourse[student.course_name] += student.pr;
+
+        // course_name별로 total_issue 계산
+        if (!totalIssueByCourse[student.course_name]) {
+          totalIssueByCourse[student.course_name] = 0;
+        }
+        totalIssueByCourse[student.course_name] += student.issue;
+
+        // course_name별로 total_repo 계산
+        if (!totalRepoByCourse[student.course_name]) {
+          totalRepoByCourse[student.course_name] = 0;
+        }
+        totalRepoByCourse[student.course_name] += student.num_repos;
+
+        console.log(`Course: ${student.course_name}, Commit: ${student.commit}, PR: ${student.pr}, Issue: ${student.issue}, Repo: ${student.num_repos}`);
+        console.log(`Course: ${student.course_name}, Commit: ${student.commit}, Current Total: ${totalCommitsByCourse[student.course_name]}`);
       });
 
       console.log('Updated Group Info:', this.groupInfo);
       console.log('Students:', students);
+      console.log('Total Commits by Course:', totalCommitsByCourse);
+      console.log('Total PR by Course:', totalPRByCourse);
+      console.log('Total Issue by Course:', totalIssueByCourse);
+      console.log('Total Repo by Course:', totalRepoByCourse);
+
       this.students = students;
       this.filteredStudents = students; // Apply initial filter state
+      this.totalCommitsByCourse = totalCommitsByCourse; // 저장
+      this.totalPRByCourse = totalPRByCourse; // 저장
+      this.totalIssueByCourse = totalIssueByCourse; // 저장
+      this.totalRepoByCourse = totalRepoByCourse; // 저장
+
     },
     updateFilteredStudents(filtered) {
       this.filteredStudents = filtered;
