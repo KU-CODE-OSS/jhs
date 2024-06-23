@@ -10,7 +10,7 @@ import '@mdi/font/css/materialdesignicons.css' // icon
 
 
 // 개발 서버의 주소를 설정합니다.
-axios.defaults.baseURL = 'http://43.155.173.127:8000'
+axios.defaults.baseURL = 'http://localhost:8080'
 
 const app = createApp(App)
 
